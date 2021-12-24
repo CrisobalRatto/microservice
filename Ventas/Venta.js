@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+require("../Productos/Producto.js") 
+
+
 
 mongoose.model('Ventas', {
     
@@ -9,17 +12,17 @@ mongoose.model('Ventas', {
 
     },
     idCliente: {
-        type: mongoose.SchemaType.ObjectId,
+        type: mongoose.SchemaTypes.ObjectId,
         //required: [true ]
 
     },
     idProducto: {
-        type: mongoose.SchemaType.ObjectId,
+        type: mongoose.SchemaTypes.ObjectId,
         //required: [true ]
 
     },
     cantidad: {
-        type: Date,
+        type: Number,
         //required: [true ]
 
     },
@@ -30,12 +33,18 @@ mongoose.model('Ventas', {
     },
     iva: {
         type: Number,
+        // get: subtotal => {
+            
+        //     let iva = Math.floor( 19 / ( subtotal * 100 ) );
+        //     return iva;
+        // },
+        // set: iva => iva,
         //Require: true
 
     },
     total: {
-        type: Number,
-        //required: [true]
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Productos"
 
     },
     fechaCreacion: {
@@ -48,8 +57,8 @@ mongoose.model('Ventas', {
         type: Date,
         required: [false],
         default: Date.now
-    },
-
-
+    }
 
 });
+
+

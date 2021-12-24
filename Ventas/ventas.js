@@ -8,28 +8,43 @@ app.use(bodyParser.json());
 const mongoose = require ("mongoose");
 const { default: axios } = require("axios");
 require("./Venta.js"); 
+require("../Productos/Producto.js") 
+
 
 const venta = mongoose.model("Ventas")
+const venta = mongoose.model("Productos")
+
+
+
+
 
 //connect 
 mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", () => {
     console.log("database connected - sercivio ventas");
 })
 
+app.get('/', (req, res) => {
+    console.log(req.body)
+    res.send("Ventas Servicio")
+
+} )
+
+
+
 //Agregar 
 app.post("/venta", (req, res) => {
-    var newCliente = {
+    var newVenta = {
         folio: req.body.folio,
         idCliente: mongoose.Types.ObjectId(req.body.idCliente),
         idProducto: mongoose.Types.ObjectId(req.body.idProducto),
         cantidad: req.body.cantidad,
-        subtotal: req.body.subtotal,
-        iva: req.body.iva,
-        total: req.body.total,
+        subtotal: req.body.precio,
+        iva: (req.body.iva),
+        total: (req.body.precio * cantidad ) ,
         fechaCreacion: req.body.fechaCreacion,
         fechaModificacion: req.body.fechaModificacion
     }
-    var Venta = new venta(newCliente)
+    var Venta = new venta(newVenta)
     Venta.save().then(() => {
         res.send("nueva venta creada con exito")
     }).catch((err) => {
@@ -39,6 +54,9 @@ app.post("/venta", (req, res) => {
     })
     
 })
+
+//Order.find(any order).populate([ { path: 'orderItems.product', model: 'Order', populate: [ { path: 'user', model: 'User', select: 'name', }, ], }, ])
+
 
 
 app.get("/ventas",(req,res) => {
@@ -63,11 +81,11 @@ app.get("/venta/:_id", (req, res) => {
                 console.log(response)
                 var ventaObject = {nombreCliente: response.data.nombre, nombreProducto:'' }
 
-                axios.get("http:/localhost:5555/producto" + venta.idProducto).then(response) => {
+                axios.get("http:/localhost:5555/producto" + venta.idProducto).then((response) => {
                     ventaObject.nombreProducto = response.data.nombre
                     res.json(ventaObject)
 
-                }
+                })
 
 
             })

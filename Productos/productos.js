@@ -1,7 +1,7 @@
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
-const bodyParser = require(body-parser)
+const bodyParser = require("body-parser")
 
 app.use(bodyParser.json());
 
@@ -14,6 +14,14 @@ mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb
 //cargar modelo
 require("./Producto") 
 const producto = mongoose.model("Productos")
+
+app.get('/', (req, res) => {
+    console.log(req.body)
+    res.send("Productos Servicio")
+
+} )
+
+
 
 app.post("/producto", (req, res) => {
     var newProducto = {
@@ -116,7 +124,7 @@ app.post("/producto/modificar/:_id", (req,res) => {
 
 })
 
-app.listen("5555", () => {
+app.listen("5656", () => {
     console.log ("servicio productos corriendo")
 
 

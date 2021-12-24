@@ -8,6 +8,7 @@ const mongoose = require("mongoose")
         sku: {
             type: String,
             //required: [true ]
+            unique:true
     
         },
         nombre: {
@@ -26,7 +27,7 @@ const mongoose = require("mongoose")
     
         },
         precio: {
-            type: Date,
+            type: Number,
             //required: [true ]
     
         },
