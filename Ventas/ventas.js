@@ -8,11 +8,12 @@ app.use(bodyParser.json());
 const mongoose = require ("mongoose");
 const { default: axios } = require("axios");
 require("./Venta.js"); 
-require("../Productos/Producto.js") 
+
 
 
 const venta = mongoose.model("Ventas")
-const venta = mongoose.model("Productos")
+
+
 
 
 
@@ -33,6 +34,15 @@ app.get('/', (req, res) => {
 
 //Agregar 
 app.post("/venta", (req, res) => {
+    require("../Productos/Producto.js")
+    //var Productos = mongoose.model(productoSchema, "Productos")
+    var Productos = require('../Productos/Producto.js')
+    Productos.findById(req.body.id).then ((Productos) = {
+
+            idProducto: mongoose.Types.ObjectId(req.body.idProducto)
+
+
+    })
     var newVenta = {
         folio: req.body.folio,
         idCliente: mongoose.Types.ObjectId(req.body.idCliente),
@@ -40,7 +50,7 @@ app.post("/venta", (req, res) => {
         cantidad: req.body.cantidad,
         subtotal: req.body.precio,
         iva: (req.body.iva),
-        total: (req.body.precio * cantidad ) ,
+        total: Productos.precio ,
         fechaCreacion: req.body.fechaCreacion,
         fechaModificacion: req.body.fechaModificacion
     }
@@ -139,9 +149,44 @@ app.post("/venta/modificar/:_id", (req,res) => {
 
 })
 
+app.delete("/venta/:_id", (req,res) => {
+    venta.findOneAndRemove(req.params._id).then(() => {
+        res.send("venta eliminada")
 
-app.listen(7070, () => {
+    }).catch(err => {
+        if(err){
+            res.status(404).send("no se encontro venta con ese id para ser eliminada")
+            
+            
+        }
+    })
+
+} )
+
+app.listen(7081, () => {
 console.log("servicio ventas corriendo")
 
 
 })
+
+
+// Venta venta = new Venta();
+		
+// 		try {
+// 		Cliente cliente = clientesDAO.findById(vDTO.getIdcliente()).get();
+// 		venta.setCliente(cliente);
+
+// 		Product product = productsDAO.findById(vDTO.getIdproducto()).get();
+// 		venta.setProduct(product);
+		
+// 		venta.setFolio(Integer.parseInt("100"+vDTO.getFolio()));
+// 		venta.setCantidad(vDTO.getCantidad());
+// 		venta.setSubtotal(vDTO.getCantidad()*product.getPrecio());
+// 		venta.setIva(vDTO.getIva());
+// 		venta.setTotal(Math.round(venta.getSubtotal()*(1+venta.getIva()/100f)/10)*10);
+// 		venta.setFechaCreacion(new Date(System.currentTimeMillis()));
+// 		venta.setFechaModificacion(null);
+	
+// 		ventasDAO.save(venta);
+// 		return ResponseEntity.ok(venta);
+// 		}
