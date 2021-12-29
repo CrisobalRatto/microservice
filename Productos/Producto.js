@@ -1,9 +1,7 @@
-const mongoose = require("mongoose")
 
-var Schema   = mongoose.Schema;
+const mongoose = require("mongoose");
 
-
-var productoSchema = new Schema({
+const productoSchema = new mongoose.Schema({
     sku: {
         type: String,
         //required: [true ]
@@ -41,22 +39,9 @@ var productoSchema = new Schema({
         required: [false],
         default: Date.now
     },
-  });
+});
 
-  const Productos = mongoose.model('Productos', productoSchema);
-
-  module.exports = mongoose.model('Productos', productoSchema );
-
-
-
-
-
-
-
-
-
-
-
+module.exports = mongoose.model('Productos', productoSchema);
 
 
 

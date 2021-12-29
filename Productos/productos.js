@@ -6,14 +6,25 @@ const bodyParser = require("body-parser")
 app.use(bodyParser.json());
 
 
-//connect 
-mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", () => {
-    console.log("database connected - servicio productos");
-})
+
+mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
+    {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+      autoReconnect: true,
+      reconnectTries: 300000,
+      reconnectInterval: 5000,
+      useMongoClient: true
+    }, 
+    () => {
+      console.log("Conectado a la base de datos!");
+    }
+  );
+
 
 //cargar modelo
-require("./Producto") 
-const producto = mongoose.model("Productos")
+
+const producto = require("./Producto");
 
 app.get('/', (req, res) => {
     console.log(req.body)
@@ -124,7 +135,7 @@ app.post("/producto/modificar/:_id", (req,res) => {
 
 })
 
-app.listen("5657", () => {
+app.listen("5659", () => {
     console.log ("servicio productos corriendo")
 
 

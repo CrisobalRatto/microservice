@@ -8,14 +8,24 @@ app.use(bodyParser.json());
 
 //cargar mongose
     const mongoose = require ("mongoose");
-    require("./Cliente.js"); 
-    
-    const cliente = mongoose.model("Cliente")
+   
+    const cliente = require("Cliente");
 
     //connect 
-    mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", () => {
-        console.log("database connected - sercivio clientes");
-    })
+    mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
+    {
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+      autoReconnect: true,
+      reconnectTries: 300000,
+      reconnectInterval: 5000,
+      useMongoClient: true
+    }, 
+    () => {
+      console.log("Conectado a la base de datos!");
+    }
+  );
+
 
 //mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/test
 

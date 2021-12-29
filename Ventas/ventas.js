@@ -1,28 +1,53 @@
 const express = require ("express")
 const app = express()
+const mongoose = require ("mongoose");
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
 
-//cargar mongose
-const mongoose = require ("mongoose");
-const { default: axios } = require("axios");
-require("./Venta.js"); 
-
-
-
-const venta = mongoose.model("Ventas")
-
-
-
-
-
-
 
 //connect 
-mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", () => {
-    console.log("database connected - sercivio ventas");
-})
+
+
+
+
+
+try{
+await mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
+
+
+{
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+      autoReconnect: true,
+      reconnectTries: 300000,
+      reconnectInterval: 5000,
+      useMongoClient: true
+    }, 
+    () => {
+      console.log("Conectado a la base de datos!");
+    }
+  );
+}catch(error){console.log(error)}
+
+
+
+//cargar modelo
+const producto = require("../Productos/Producto.js") 
+
+
+
+const venta = require("./Venta.js"); 
+
+
+const { default: axios } = require("axios");
+
+
+
+
+
+
+
 
 app.get('/', (req, res) => {
     console.log(req.body)
@@ -33,24 +58,22 @@ app.get('/', (req, res) => {
 
 
 //Agregar 
-app.post("/venta", (req, res) => {
-    require("../Productos/Producto.js")
+app.post("/venta", async (req, res) => {
+    //
     //var Productos = mongoose.model(productoSchema, "Productos")
-    var Productos = require('../Productos/Producto.js')
-    Productos.findById(req.body.id).then ((Productos) = {
-
-            idProducto: mongoose.Types.ObjectId(req.body.idProducto)
-
-
-    })
+    //var ProductosModel = require('../Productos/Producto.js')
+    console.log("body",req.body)
+    var productoAgregar = await producto.findById(req.body.idProducto)
+    console.log( productoAgregar.precio)
     var newVenta = {
+
         folio: req.body.folio,
         idCliente: mongoose.Types.ObjectId(req.body.idCliente),
-        idProducto: mongoose.Types.ObjectId(req.body.idProducto),
+        // idProducto: mongoose.Types.ObjectId(req.body.idProducto),
         cantidad: req.body.cantidad,
         subtotal: req.body.precio,
         iva: (req.body.iva),
-        total: Productos.precio ,
+        total: productoAgregar.precio ,
         fechaCreacion: req.body.fechaCreacion,
         fechaModificacion: req.body.fechaModificacion
     }
@@ -163,7 +186,7 @@ app.delete("/venta/:_id", (req,res) => {
 
 } )
 
-app.listen(7081, () => {
+app.listen(7091, () => {
 console.log("servicio ventas corriendo")
 
 

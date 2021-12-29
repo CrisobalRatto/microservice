@@ -1,11 +1,6 @@
-const mongoose = require('mongoose');
-require("../Productos/Producto.js") 
+const mongoose = require("mongoose");
 
-
-
-mongoose.model('Ventas', {
-    
-
+const ventaSchema = new mongoose.Schema({
     folio: {
         type: String,
         //required: [true ]
@@ -43,8 +38,8 @@ mongoose.model('Ventas', {
 
     },
     total: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "Productos"
+        type: Number,
+        
 
     },
     fechaCreacion: {
@@ -58,7 +53,6 @@ mongoose.model('Ventas', {
         required: [false],
         default: Date.now
     }
-
 });
 
-
+module.exports = mongoose.model('Ventas', ventaSchema);
