@@ -55,4 +55,7 @@ const ventaSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model('Ventas', ventaSchema);
+var venta = mongoose.model('Ventas', ventaSchema);
+module.exports = venta;
+
+//module.exports = mongoose.model('Ventas', ventaSchema);

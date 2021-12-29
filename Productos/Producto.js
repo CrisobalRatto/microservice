@@ -41,14 +41,18 @@ const productoSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Productos', productoSchema);
+//module.exports = mongoose.model('Productos', productoSchema);
+
+
+var producto = mongoose.model('Productos', productoSchema);
+module.exports = producto;
 
 
 
-
-
-
-
+//const mongoose = require('mongoose');
+//const { Schema } = mongoose;
+// const featuredSchema = new Schema({}, { collection: "featured" });
+// module.exports = mongoose.model('featured', featuredSchema);
 
 
 

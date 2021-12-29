@@ -2,45 +2,64 @@ const express = require ("express")
 const app = express()
 const mongoose = require ("mongoose");
 const bodyParser = require("body-parser");
-
+var producto = require("../Productos/Producto.js");
+var venta = require("./Venta.js");
 app.use(bodyParser.json());
+const { default: axios } = require("axios");
 
 
 //connect 
 
 
 
+// const start = async () => {
+
+// try{
+// await mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
 
 
-try{
-await mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
+// {
+//       keepAlive: 300000,
+//       connectTimeoutMS: 30000,
+//       autoReconnect: true,
+//       reconnectTries: 300000,
+//       reconnectInterval: 5000,
+//       //useMongoClient: false
+//     }, 
+//     () => {
+//       console.log("Conectado a la base de datos!");
+//     }
+//   );
+// }catch(error){console.log(error)}
+
+// }
+// start();
 
 
-{
-      keepAlive: 300000,
-      connectTimeoutMS: 30000,
-      autoReconnect: true,
-      reconnectTries: 300000,
-      reconnectInterval: 5000,
-      useMongoClient: true
-    }, 
-    () => {
-      console.log("Conectado a la base de datos!");
-    }
-  );
-}catch(error){console.log(error)}
+mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab")
+
 
 
 
 //cargar modelo
-const producto = require("../Productos/Producto.js") 
+// const producto = require("../Productos/Producto.js") 
 
 
 
-const venta = require("./Venta.js"); 
+// const venta = require("./Venta.js"); 
+
+// require("../Productos/Producto.js")
+// const producto = mongoose.model("Productos");
+// require("./Venta.js")
+// const venta = mongoose.model("Ventas", ventaSchema);
+
+//const producto = import Productos from '../Productos/Producto.js';
 
 
-const { default: axios } = require("axios");
+
+
+
+
 
 
 
@@ -63,8 +82,24 @@ app.post("/venta", async (req, res) => {
     //var Productos = mongoose.model(productoSchema, "Productos")
     //var ProductosModel = require('../Productos/Producto.js')
     console.log("body",req.body)
-    var productoAgregar = await producto.findById(req.body.idProducto)
-    console.log( productoAgregar.precio)
+    
+    //var productoAgregar =  await producto.findById(req.body.idProducto)
+    
+     producto.findById(req.body.id).then ((producto) => {
+        
+        var precio = producto.precio;
+        console.log("este es el precio :",precio)
+
+
+    }).catch(err => {
+        if(err){
+            res.status(404).send("no se encontro producto con ese id")
+        }
+
+    })
+    
+    //console.log("producto agregar ", productoAgregar)
+    
     var newVenta = {
 
         folio: req.body.folio,
@@ -73,7 +108,7 @@ app.post("/venta", async (req, res) => {
         cantidad: req.body.cantidad,
         subtotal: req.body.precio,
         iva: (req.body.iva),
-        total: productoAgregar.precio ,
+        //total: precio ,
         fechaCreacion: req.body.fechaCreacion,
         fechaModificacion: req.body.fechaModificacion
     }

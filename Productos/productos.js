@@ -7,24 +7,29 @@ app.use(bodyParser.json());
 
 
 
-mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
-    {
-      keepAlive: 300000,
-      connectTimeoutMS: 30000,
-      autoReconnect: true,
-      reconnectTries: 300000,
-      reconnectInterval: 5000,
-      useMongoClient: true
-    }, 
-    () => {
-      console.log("Conectado a la base de datos!");
-    }
-  );
+mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab")
+//     {
+//       keepAlive: 300000,
+//       connectTimeoutMS: 30000,
+//       autoReconnect: true,
+//       reconnectTries: 300000,
+//       reconnectInterval: 5000,
+//       useMongoClient: true
+//     }, 
+//     () => {
+//       console.log("Conectado a la base de datos!");
+//     }
+//   );
 
 
 //cargar modelo
 
-const producto = require("./Producto");
+//const producto = require("./Producto");
+
+var producto = require("./Producto.js");
+
+
+
 
 app.get('/', (req, res) => {
     console.log(req.body)
