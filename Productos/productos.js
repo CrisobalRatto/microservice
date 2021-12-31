@@ -7,19 +7,41 @@ app.use(bodyParser.json());
 
 
 
-mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab")
+// const start = async () => {
+
+//     try{
+//     await mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
+    
+    
 //     {
-//       keepAlive: 300000,
-//       connectTimeoutMS: 30000,
-//       autoReconnect: true,
-//       reconnectTries: 300000,
-//       reconnectInterval: 5000,
-//       useMongoClient: true
-//     }, 
-//     () => {
-//       console.log("Conectado a la base de datos!");
+//           keepAlive: 300000,
+//           connectTimeoutMS: 30000,
+//           autoReconnect: true,
+//           reconnectTries: 300000,
+//           reconnectInterval: 5000,
+//           //useMongoClient: false
+//         }, 
+//         () => {
+//           console.log("Conectado a la base de datos producto!");
+//         }
+//       );
+//     }catch(error){console.log(" error basededatos ", error)}
+    
 //     }
-//   );
+//     start();
+// mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab")
+// //     {
+// //       keepAlive: 300000,
+// //       connectTimeoutMS: 30000,
+// //       autoReconnect: true,
+// //       reconnectTries: 300000,
+// //       reconnectInterval: 5000,
+// //       useMongoClient: true
+// //     }, 
+// //     () => {
+// //       console.log("Conectado a la base de datos!");
+// //     }
+// //   );
 
 
 //cargar modelo

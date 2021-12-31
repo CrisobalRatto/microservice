@@ -2,8 +2,8 @@ const express = require ("express")
 const app = express()
 const mongoose = require ("mongoose");
 const bodyParser = require("body-parser");
-var producto = require("../Productos/Producto.js");
-var venta = require("./Venta.js");
+const productos =  require("../Productos/Producto.js");
+const venta = require("./Venta.js");
 app.use(bodyParser.json());
 const { default: axios } = require("axios");
 
@@ -12,31 +12,31 @@ const { default: axios } = require("axios");
 
 
 
-// const start = async () => {
+const start = async () => {
 
-// try{
-// await mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
-
-
-// {
-//       keepAlive: 300000,
-//       connectTimeoutMS: 30000,
-//       autoReconnect: true,
-//       reconnectTries: 300000,
-//       reconnectInterval: 5000,
-//       //useMongoClient: false
-//     }, 
-//     () => {
-//       console.log("Conectado a la base de datos!");
-//     }
-//   );
-// }catch(error){console.log(error)}
-
-// }
-// start();
+try{
+await mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab", 
 
 
-mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab")
+{
+      keepAlive: 300000,
+      connectTimeoutMS: 30000,
+      autoReconnect: true,
+      reconnectTries: 300000,
+      reconnectInterval: 5000,
+      //useMongoClient: false
+    }, 
+    () => {
+      console.log("Conectado a la base de datos!");
+    }
+  );
+}catch(error){console.log(error)}
+
+}
+start();
+
+
+ //mongoose.connect("mongodb+srv://cris20xx:NfxFeNq3RUVtubwQ@cluster0.j89qi.mongodb.net/lab")
 
 
 
@@ -84,15 +84,17 @@ app.post("/venta", async (req, res) => {
     console.log("body",req.body)
     
     //var productoAgregar =  await producto.findById(req.body.idProducto)
-    
-     producto.findById(req.body.id).then ((producto) => {
+    console.log("imprimir rec",req.body.idProducto )
+     await productos.findById(req.body.idProducto).then  (( producto) => {
         
         var precio = producto.precio;
         console.log("este es el precio :",precio)
 
 
     }).catch(err => {
+        console.log("error http", err)
         if(err){
+            console.log(err)
             res.status(404).send("no se encontro producto con ese id")
         }
 
