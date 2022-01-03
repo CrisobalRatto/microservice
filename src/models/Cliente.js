@@ -41,13 +41,13 @@ const ClienteSchema = Schema({
     fechaCreacion: {
         type: Date,
         required: [false],
-        default: Date.now
+        //default: Date.now
 
     },
     fechaModificacion: {
         type: Date,
         required: [false],
-        default: Date.now
+        //default: Date.now
     },
 
 

@@ -55,11 +55,11 @@ exports.agregarVentas = async (req, res)=>{
             idCliente: mongoose.Types.ObjectId(req.body.idCliente),
             // idProducto: mongoose.Types.ObjectId(req.body.idProducto),
             cantidad: req.body.cantidad,
-            subtotal: req.body.precio,
-            iva: req.body.iva,
-            total: producto.precio ,
-            fechaCreacion: req.body.fechaCreacion,
-            fechaModificacion: req.body.fechaModificacion
+            subtotal: producto.precio,
+            iva: producto.precio * 0.19 ,
+            total: (producto.precio + iva) * cantidad ,
+            fechaCreacion: new Date(),
+            fechaModificacion: new Date()
         }
     
         var venta = new Venta(newVenta);
@@ -98,32 +98,55 @@ exports.listarVentasID = (req, res) => {
     Venta.findById(req.params._id).then ((venta) => {
         
         if(venta){
-            axios.get("http://localhost:8088/cliente" + venta.idCliente).then((response) =>{
-                console.log(response)
-                var ventaObject = {nombreCliente: response.data.nombre, nombreProducto:'' }
 
-                axios.get("http:/localhost:5555/producto" + venta.idProducto).then((response) => {
-                    ventaObject.nombreProducto = response.data.nombre
-                    res.json(ventaObject)
-
-                })
-
-
-            })
-            res.send("respuesta")
-            //res.json(venta)
+            res.json(venta)
         }else{
-            res.send("venta invalida");
+            res.sendStatus(404);
         }
 
     }).catch(err => {
         if(err){
-            res.status(404).send("no se encontro cliente con ese id")
+            res.status(404).send("no se encontro venta con ese id")
         }
 
     })
 
-} 
+}
+
+
+
+
+
+// exports.listarVentasID = (req, res) => {
+//     Venta.findById(req.params._id).then ((venta) => {
+        
+//         if(venta){
+//             axios.get("http://localhost:3001/cliente" + venta.idCliente).then((response) =>{
+//                 console.log(response)
+//                 var ventaObject = {nombreCliente: response.data.nombre, nombreProducto:'' }
+
+//                 axios.get("http://localhost:3001/producto" + venta.idProducto).then((response) => {
+//                     ventaObject.nombreProducto = response.data.nombre
+//                     res.json(ventaObject)
+
+//                 })
+
+
+//             })
+//             res.send("respuesta")
+//             //res.json(venta)
+//         }else{
+//             res.send("venta invalida");
+//         }
+
+//     }).catch(err => {
+//         if(err){
+//             res.status(404).send("no se encontro venta con ese id")
+//         }
+
+//     })
+
+// } 
 
 //modificar venta por id
 
@@ -141,8 +164,8 @@ exports.modificarVentaID = (req,res) => {
             subtotal: req.body.subtotal,
             iva: req.body.iva,
             total: req.body.total,
-            fechaCreacion: req.body.fechaCreacion,
-            fechaModificacion: req.body.fechaModificacion
+            fechaCreacion: req.params.fechaCreacion,
+            fechaModificacion: new Date()
 
         }, 
         {

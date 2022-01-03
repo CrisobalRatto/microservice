@@ -28,8 +28,8 @@ exports.agregarProductos = (req, res) => {
         marca: req.body.marca,
         descripcion: req.body.descripcion,
         precio: req.body.precio,
-        fechaCreacion: req.body.fechaCreacion,
-        fechaModificacion: req.body.fechaModificacion
+        fechaCreacion: new Date(),
+        fechaModificacion: new Date()
     }
     var Producto = new Producto(newProducto)
     Producto.save().then(() => {

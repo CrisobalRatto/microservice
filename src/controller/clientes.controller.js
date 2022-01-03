@@ -20,7 +20,7 @@ exports.inicioClientes = (req, res) => {
 
 //agregar
 
-exports.agregarClientes = async (req, res) => {
+exports.agregarClientes =  (req, res) => {
     var newCliente = {
         nombre: req.body.nombre,
         apellidoPaterno: req.body.apellidoPaterno,
@@ -29,11 +29,11 @@ exports.agregarClientes = async (req, res) => {
         sexo: req.body.sexo,
         telefono: req.body.telefono,
         direccion: req.body.direccion,
-        fechaCreacion: req.body.fechaCreacion,
-        fechaModificacion: req.body.fechaModificacion
+        fechaCreacion: new Date(),
+        fechaModificacion: new Date()
     }
-    var Cliente = await new Cliente(newCliente)
-    Cliente.save().then(() => {
+    var cliente =  new Cliente(newCliente)
+    cliente.save().then(() => {
         console.log("nuevo cliente creado")
     }).catch((err) => {
         if(err){
@@ -94,8 +94,8 @@ exports.modificarClienteID = (req,res) => {
             sexo: req.body.sexo,
             telefono: req.body.telefono,
             direccion: req.body.direccion,
-            fechaCreacion: req.body.fechaCreacion,
-            fechaModificacion: req.body.fechaModificacion
+            fechaCreacion: req.params.fechaCreacion,
+            fechaModificacion: new Date()
         }, 
         {
             upsert:true,
