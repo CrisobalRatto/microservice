@@ -73,7 +73,7 @@ exports.login_post = function(req, res) {
         } else {
             return Promise.reject({
                 status: false,
-                error: 'User not found.'
+                error: 'usuario no encontrado.'
             })
         }
     // }).then((token) => {
