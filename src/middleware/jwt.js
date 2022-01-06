@@ -18,4 +18,12 @@ var jwtVerify = function(req, res, next) {
     });
 }
 
+
+
+
+
+
+
+
+
 module.exports = jwtVerify;
