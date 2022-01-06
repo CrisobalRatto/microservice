@@ -1,4 +1,10 @@
 const express = require("express");
+const bodyParser = require('body-parser');
+const clientSessions = require('client-sessions');
+
+var routerUser = require('./routes/user.routes');
+// var index = require('./routes/index');
+// var api = require('./routes/api');
 
 const conexionDB = require("./db.conexion");
 const routerProductos = require("./routes/productos.routes");
@@ -19,8 +25,25 @@ app.use(express.json());
 
 module.exports= app;
 
-// llamado rutas
+// parse setting
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: false}));
 
+// client clientSessions
+app.use(clientSessions({
+    cookieName: 'sessions', // cookie req.session para assignar nombre
+    secret: '123123dfghj',
+    duration: 5 * 60 * 1000, // cuanto dura la session en ms
+    cookie: {
+        path: '/api/', // cookie sera mandado aesta direccion '/api'
+        maxAge: 5 * 60 * 1000,
+        httpOnly: true, 
+        ephemeral: false // true, cookie expira al cerrar el navegador
+    }
+}))
+
+// llamado rutas
+app.use('/user', routerUser);
 app.use("/api/producto", routerProductos);
 app.use("/api/cliente", routerClientes);
 app.use("/api/venta", routerVentas);

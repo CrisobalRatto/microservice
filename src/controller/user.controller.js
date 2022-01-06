@@ -19,8 +19,8 @@ var jwt_sign = function(payload, secret) {
 exports.register_post = function(req, res) {
     // extract req.body fields to create user
     let user = (({
-        name, user, pwd, role
-    }) => ({name, user, pwd, role}))(req.body);
+        nombre, user, pass, rol
+    }) => ({nombre, user, pass, rol}))(req.body);
 
     // ver si esta
     User.findOne({user: user.user}).then((doc) => {
@@ -32,7 +32,8 @@ exports.register_post = function(req, res) {
 
         } else {
             // hash 
-            user.pwd = bcrypt.hashSync(user.pwd, config.salt);
+            user.pass = bcrypt.hashSync(user.pass, config.xx
+                );
             user = new User(user);
             return user.save();
         }
@@ -50,44 +51,43 @@ exports.register_post = function(req, res) {
 // Login POST
 exports.login_post = function(req, res) {
     let loginInfo = (({
-        user, pwd
-    }) => ({user, pwd}))(req.body);
+        user, pass
+    }) => ({user, pass}))(req.body);
 
     let userInfo = {};
     let token = '';
 
     // hash pass
-    loginInfo.pwd = bcrypt.hashSync(loginInfo.pwd, config.salt);
+    loginInfo.pass = bcrypt.hashSync(loginInfo.pass, config.xx
+        );
 
     // encontrar user en bd
     User.findOne(loginInfo).then((doc) => {
         // crear jwt
         if (doc) {
             userInfo = (({
-                name, user, role
-            }) => ({name, user, role}))(doc);
-
+                nombre, user, rol
+            }) => ({nombre, user, rol}))(doc);
             // sign token
             return jwt_sign(userInfo, config.secret);
-        // user not found
         } else {
             return Promise.reject({
                 status: false,
                 error: 'usuario no encontrado.'
             })
         }
-    // }).then((token) => {
-    //     // set  clientSessions
-    //     if (! req.sessions.token) {
-    //         req.sessions.token = token;
-    //     }
+    }).then((token) => {
+        // set  clientSessions
+        if (! req.sessions.token) {
+            req.sessions.token = token;
+        }
 
-    //     res.status(200).send({
-    //         user: userInfo.user,
-    //         name: userInfo.name,
-    //         role: userInfo.role
-    //     });
-    // }).catch((e) => {
-    //     res.status(400).send(e);
-    // })
+        res.status(200).send({
+            user: userInfo.user,
+            nombre: userInfo.nombre,
+            rol: userInfo.rol
+        });
+    }).catch((e) => {
+        res.status(400).send(e);
+    })
 }
