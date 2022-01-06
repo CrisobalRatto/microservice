@@ -20,7 +20,10 @@ exports.register_post = function(req, res) {
     // extract req.body fields to create user
     let user = (({
         nombre, user, pass, rol
-    }) => ({nombre, user, pass, rol}))(req.body);
+    }) => ({nombre, 
+        user, 
+        pass, 
+        rol}))(req.body);
 
     // ver si esta
     User.findOne({user: user.user}).then((doc) => {
@@ -52,7 +55,8 @@ exports.register_post = function(req, res) {
 exports.login_post = function(req, res) {
     let loginInfo = (({
         user, pass
-    }) => ({user, pass}))(req.body);
+    }) => ({user, 
+            pass}))(req.body);
 
     let userInfo = {};
     let token = '';
@@ -67,8 +71,10 @@ exports.login_post = function(req, res) {
         if (doc) {
             userInfo = (({
                 nombre, user, rol
-            }) => ({nombre, user, rol}))(doc);
-            // sign token
+            }) => ({nombre, 
+                    user, 
+                    rol}))(doc);
+                    // sign token
             return jwt_sign(userInfo, config.secret);
         } else {
             return Promise.reject({
