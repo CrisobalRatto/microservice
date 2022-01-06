@@ -1,15 +1,10 @@
-const config = require('../config');
+const config = require('../config.js');
 var mongoose = require('mongoose');
 
 //usar mongoose promise 
 mongoose.Promise = global.Promise;
 
-mongoose.connect(config.db);
-var db = mongoose.connection;
 
-
-//pasar coneccion por error para tener notificacion de errores de conexion 
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // crear schema
 var userSchema = new mongoose.Schema({

@@ -3,6 +3,9 @@ const controllerProductos = require ("../controller/productos.controller");
 
 const routerProductos = Router();
 
+var jwtVerify = require('../middleware/jwt');
+
+routerProductos.use(jwtVerify);
 
 //routerProductos.get("/", controllerProductos.obtenerProductos);
 

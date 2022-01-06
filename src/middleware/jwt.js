@@ -9,7 +9,7 @@ var jwtVerify = function(req, res, next) {
         console.log(payload);
         if (err || payload.ext < Date.now() / 1000) {
             res.status(401).send({
-                "error": "Unauthorized"
+                "error": "No esta autorizado para usar api "
             });
         } else {
             req.payload = payload;

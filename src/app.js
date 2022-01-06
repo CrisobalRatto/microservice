@@ -35,7 +35,7 @@ app.use(clientSessions({
     secret: '123123dfghj',
     duration: 5 * 60 * 1000, // cuanto dura la session en ms
     cookie: {
-        path: '/api/', // cookie sera mandado aesta direccion '/api'
+        path: '/api/producto', // cookie sera mandado aesta direccion '/api'
         maxAge: 5 * 60 * 1000,
         httpOnly: true, 
         ephemeral: false // true, cookie expira al cerrar el navegador

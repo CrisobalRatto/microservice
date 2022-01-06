@@ -2,7 +2,7 @@ const {Router} = require ("express");
 const routerUser = Router();
 
 
-var userController = require('../controllers/userController');
+var userController = require('../controller/user.controller');
 
 // registrar nuevo usuario
 routerUser.post('/register', userController.register_post);
