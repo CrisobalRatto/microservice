@@ -75,7 +75,7 @@ exports.login_post = function(req, res) {
                     user, 
                     rol}))(doc);
                     // sign token
-            return jwt_sign(userInfo, config.secret);
+            return jwt_sign(userInfo, config.xx);
         } else {
             return Promise.reject({
                 status: false,

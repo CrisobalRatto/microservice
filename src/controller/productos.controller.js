@@ -1,5 +1,12 @@
 const Producto = require("../models/Producto");
 
+//var jwtVerify = require('../middleware/jwt');
+
+
+// var jwtVerify = require('../middleware/jwt');
+
+// router.use(jwtVerify);
+
 //listar productos
 exports.obtenerProductos = async (req, res)=>{
     try{

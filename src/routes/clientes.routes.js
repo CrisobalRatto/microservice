@@ -3,6 +3,12 @@ const controllerClientes = require ("../controller/clientes.controller");
 
 const routerClientes = Router();
 
+var jwtVerify = require('../middleware/jwt');
+
+routerClientes.use(jwtVerify);
+
+
+
 //listar clientes
 routerClientes.get("/clientesregistrados", controllerClientes.obtenerClientes);
 
