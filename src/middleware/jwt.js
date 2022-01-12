@@ -6,7 +6,7 @@ var jwtVerify = function(req, res, next) {
 
     // decode jwt token
     jwt.verify(token, config.xx, (err, payload) => {
-        console.log(token);
+        //console.log(token);
 
         if (err || payload.ext < Date.now() / 1000) {
             res.status(401).send({
