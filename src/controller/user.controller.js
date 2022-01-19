@@ -1,13 +1,16 @@
 var User = require('../models/User');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
-
+var jwtVerify = require('../middleware/jwt');
 var config = require('../config');
+const clientSessions = require('client-sessions');
+
+const maxAge = 3 * 24 * 60 * 60;
 
 var jwt_sign = function(payload, secret) {
     return new Promise((resolve, reject) => {
         jwt.sign(payload, secret, {
-            expiresIn: 5 * 60
+            expiresIn: maxAge
         }, (err, token) => {
             if (err) reject(err);
             resolve(token);
@@ -87,13 +90,26 @@ exports.login_post = function(req, res) {
         if (! req.sessions.token) {
             req.sessions.token = token;
         }
-
-        res.status(200).send({
+        console.log(token)
+        res.send({
+            
+            token:token,
             user: userInfo.user,
             nombre: userInfo.nombre,
             rol: userInfo.rol
         });
     }).catch((e) => {
+        console.log(e)
+        res.
         res.status(400).send(e);
     })
 }
+
+
+
+
+
+
+
+
+

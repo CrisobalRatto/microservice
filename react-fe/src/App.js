@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+//import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import Sidebar from "./components/sidebar/Sidebar";
 import Topbar from "./components/topbar/Topbar";
 import "./App.css";
@@ -5,12 +8,16 @@ import Home from "./pages/home/Home";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import UserList from "./pages/userList/UserList";
 import User from "./pages/user/User";
+import Login from "./pages/login/Login";
 import NewUser from "./pages/newUser/NewUser";
 import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 
 function App() {
+
+  
+
   return (
     <Router>
       <Topbar />
@@ -18,7 +25,12 @@ function App() {
         <Sidebar />
         <Switch>
           <Route exact path="/">
+            
             <Home />
+
+          </Route>
+          <Route path="/login">
+            <Login />
           </Route>
           <Route path="/users">
             <UserList />
