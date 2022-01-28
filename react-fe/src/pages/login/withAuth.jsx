@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 export default function withAuth(ComponentToProtect) {
-  return class extends Component {
+   return class async extends  Component {
     constructor() {
       super();
       this.state = {
@@ -10,8 +10,14 @@ export default function withAuth(ComponentToProtect) {
         redirect: false,
       };
     }
-    componentDidMount() {
-      fetch(process.env.REACT_APP_API_URL + '/api/token/checkToken',)
+    componentDidMount () {
+        fetch ( process.env.REACT_APP_API_URL + '/api/token/checkToken' , {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
         .then(res => {
           if (res.status === 200) {
             this.setState({ loading: false });
@@ -37,3 +43,4 @@ export default function withAuth(ComponentToProtect) {
     }
   }
 }
+

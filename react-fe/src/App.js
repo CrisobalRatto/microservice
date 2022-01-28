@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {  } from 'react';
 //import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Sidebar from "./components/sidebar/Sidebar";
@@ -13,6 +13,9 @@ import NewUser from "./pages/newUser/NewUser";
 import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
+import withAuth from './pages/login/withAuth';
+
+
 
 function App() {
 
@@ -23,32 +26,27 @@ function App() {
       <Topbar />
       <div className="container">
         <Sidebar />
+        
+       
+       
         <Switch>
-          <Route exact path="/">
-            
-            <Home />
-
+          
+          <Route exact path="/" component={withAuth(Home)}>
           </Route>
           <Route path="/login">
             <Login />
           </Route>
-          <Route path="/users">
-            <UserList />
+          <Route path="/users" component={withAuth(UserList)} >
           </Route>
-          <Route path="/user/:userId">
-            <User />
+          <Route path="/user/:userId" component={withAuth(User)}>
           </Route>
-          <Route path="/newUser">
-            <NewUser />
+          <Route path="/newUser" component={withAuth(NewUser)}>
           </Route>
-          <Route path="/products">
-            <ProductList />
+          <Route path="/products" component={withAuth(ProductList)}>
           </Route>
-          <Route path="/product/:productId">
-            <Product />
+          <Route path="/product/:productId" component={withAuth(Product)}>
           </Route>
-          <Route path="/newproduct">
-            <NewProduct />
+          <Route path="/newproduct" component={withAuth(NewProduct)}>
           </Route>
         </Switch>
       </div>

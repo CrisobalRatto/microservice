@@ -5,6 +5,7 @@ var jwtVerify = require('../middleware/jwt');
 var config = require('../config');
 const clientSessions = require('client-sessions');
 
+
 const maxAge = 3 * 24 * 60 * 60;
 
 var jwt_sign = function(payload, secret) {
@@ -90,19 +91,27 @@ exports.login_post = function(req, res) {
         if (! req.sessions.token) {
             req.sessions.token = token;
         }
-        console.log(token)
-        res.send({
+        //console.log(token)
+        res.status(200).send()
+        // res.send({
             
-            token:token,
-            user: userInfo.user,
-            nombre: userInfo.nombre,
-            rol: userInfo.rol
-        });
+        //     token:token,
+        //     user: userInfo.user,
+        //     nombre: userInfo.nombre,
+        //     rol: userInfo.rol
+        // });
     }).catch((e) => {
         console.log(e)
-        res.
+        
         res.status(400).send(e);
     })
+}
+
+exports.logout = async (req, res) => {
+    req.sessions.reset();
+    res
+        .status(200)
+        .json({ success: true, message: 'Session Cerrada' })
 }
 
 

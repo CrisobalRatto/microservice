@@ -20,11 +20,14 @@ routerUser.post('/login', userController.login_post);
 
 //Logout
 
-routerUser.get('/logout', function (req, res, next) {
-    var sessions = require('client-sessions');
-    req.sessions.reset();
-    res.redirect('/login');
-});
+routerUser.get('/logout', userController.logout)
+
+
+// routerUser.get('/logout', function (req, res, next) {
+//     var sessions = require('client-sessions');
+//     req.sessions.reset();
+//     //res.redirect('/login');
+// });
 
 
 
