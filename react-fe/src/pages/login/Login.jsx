@@ -1,6 +1,7 @@
 // Login.jsx
 import React, { Component  } from 'react';
 import { withRouter} from 'react-router-dom';
+import "./Login.css";
 //import { Redirect } from 'react-router'
 //import { Link } from "react-router-dom";
 
@@ -50,9 +51,9 @@ import { withRouter} from 'react-router-dom';
       if (res.status === 200) {
         
         this.props.history.push('/');
+        window.location.reload();
         //return <Redirect to='/'/>;
       }
-
       else {
         const error = new Error(res.error);
         throw error;
@@ -65,6 +66,9 @@ import { withRouter} from 'react-router-dom';
   }
   render() {
     return(
+      
+      <div className="login"> 
+      
       <div className="login-wrapper">
         <h1> Log In</h1>
         <form onSubmit={this.onSubmit}>
@@ -85,6 +89,7 @@ import { withRouter} from 'react-router-dom';
           </div>
         </form>
       </div>
+    </div>
     )
   }
 }

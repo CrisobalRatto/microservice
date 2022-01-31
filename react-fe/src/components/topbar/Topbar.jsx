@@ -1,30 +1,49 @@
 import React, { Component } from "react";
 import "./topbar.css";
 import { Button } from '@mui/material';
-//import { withRouter } from "react-router-dom";
+//import { Redirect } from "react-router-dom";
 
 
-  function handleClicklogout(e) {
-    e.preventDefault();
-    fetch ( process.env.REACT_APP_API_URL + '/user/logout' , {
-      method: 'GET',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-  }
+  // function handleClicklogout(e) {
+  //   e.preventDefault();
+  //   fetch ( process.env.REACT_APP_API_URL + '/user/logout' , {
+  //     method: 'GET',
+  //     credentials: 'include',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     }
+  //   })
+  // };
+  
+  // function RedirectLogout(){
+  //   const history=useHistory();
+  //   history.push('/')
+
+
+  // };
+
+  
+  
+  
+   
+
+
+  // RedirectLogout()
+  //     this.props.history.push('/');
+  
+  
+  //    })
 
 
   class Topbar extends  Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
       this.state = {
         visible:false,
         logedIn:false,
       };
     }
-    componentDidMount () {
+    async componentDidMount () {
         fetch ( process.env.REACT_APP_API_URL + '/api/token/checkToken' , {
         method: 'GET',
         credentials: 'include',
@@ -32,8 +51,8 @@ import { Button } from '@mui/material';
           'Content-Type': 'application/json'
         }
       })
-        .then(res => {
-          if (res.status === 200) {
+        .then (res => {
+          if (  res.status === 200) {
             this.setState({ visible: true });
           } else {
             const error = new Error(res.error);
@@ -45,27 +64,30 @@ import { Button } from '@mui/material';
           this.setState({ visible: false });
         });
       }
-       logout () {
+       
+      HandleClicklogout() {
+    
         fetch ( process.env.REACT_APP_API_URL + '/user/logout' , {
-        method: 'GET',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then(res => {
-          if (res.status === 200) {
-            ;
-          } else {
-            const error = new Error(res.error);
-            throw error;
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          this.setState({ visible: false });
-        });
-      }
+         method: 'GET',
+         credentials: 'include',
+         headers: {
+           'Content-Type': 'application/json'
+         },
+         
+       }).then(res => {
+         if (res.status === 200) {
+          window.location.reload();
+         } else {
+           const error = new Error(res.error);
+           throw error;
+         }
+       })
+   
+     }; 
+     
+
+
+      
 
 
 
@@ -84,7 +106,7 @@ render() {
           <div className="topbarIconContainer">
             {this.state.visible ?   
           
-            <Button onClick={ handleClicklogout } >LogOut</Button>: null}
+            <Button onClick={ () => { this.HandleClicklogout()}} >LogOut</Button>: null}
             
           </div>
           
