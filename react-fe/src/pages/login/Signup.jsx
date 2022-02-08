@@ -1,15 +1,18 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { withRouter} from 'react-router-dom';
+import "./Signup.css";
 
 class SignUpForm extends Component {
   constructor() {
     super();
 
     this.state = {
-      email: "",
-      password: "",
-      name: "",
-      hasAgreed: false
+      user: "",
+      pass: "",
+      nombre: "",
+      hasAgreed: false,
+      confirmPass: ''
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -26,85 +29,137 @@ class SignUpForm extends Component {
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  handleSubmit = (event) => {
+    //const[login,setIsLoggedIn]=useState(false)
+    event.preventDefault(event);
+    const { pass, confirmPass, hasAgreed } = this.state;
+    // perform all neccassary validations
+    if (pass !== confirmPass) {
+        alert("Contraseñas no coinciden");
+    } if (hasAgreed === false)
+    {
+      alert("Debe acceptar nuestros terminos");
+    }
+    else {
+    
+    fetch(process.env.REACT_APP_API_URL + '/user/register' , {
+      method: 'POST',
+      //credentials: 'include',
+      body: JSON.stringify(this.state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if (res.status === 201) {
+        
+        this.props.history.push('/login');
+        window.location.reload();
+        //return <Redirect to='/'/>;
 
-    console.log(":");
-    console.log(this.state);
+
+
+
+      }
+      else {
+        const error = new Error(res.error);
+        throw error;
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Nombre de usuario ya existe');
+    });
+  }
   }
 
+
   render() {
-    return (
-      <div className="formCenter">
-        <form onSubmit={this.handleSubmit} className="formFields">
-          <div className="formField">
-            <label className="formFieldLabel" htmlFor="name">
-              Full Name
-            </label>
+    return(
+      
+      <div className="register"> 
+      
+      <div className="register-wrapper">
+        <h1> Registrarse</h1>
+        <form onSubmit={this.handleSubmit}>
+          <label>
+            <p>Nombre</p>
             <input
               type="text"
               id="name"
               className="formFieldInput"
-              placeholder="Enter your full name"
-              name="name"
-              value={this.state.name}
+              placeholder="Ingrese nombre"
+              name="nombre"
+              value={this.state.nombre}
               onChange={this.handleChange}
+              required
             />
-          </div>
-          <div className="formField">
-            <label className="formFieldLabel" htmlFor="password">
-              Password
-            </label>
+          </label>
+          <label>
+            <p>Contraseña</p>
             <input
               type="password"
-              id="password"
+              id="pass"
               className="formFieldInput"
-              placeholder="Enter your password"
-              name="password"
-              value={this.state.password}
+              placeholder="Ingrese contraseña"
+              name="pass"
+              value={this.state.pass}
               onChange={this.handleChange}
+              required
             />
-          </div>
-          <div className="formField">
-            <label className="formFieldLabel" htmlFor="email">
-              E-Mail Address
-            </label>
+          </label>
+          <label>
+            <p> Repetir contraseña</p>
             <input
-              type="email"
-              id="email"
+              type="password"
+              id="confirmPass"
               className="formFieldInput"
-              placeholder="Enter your email"
-              name="email"
-              value={this.state.email}
+              placeholder="Ingrese contraseña"
+              name="confirmPass"
+              value={this.state.confirmPass}
               onChange={this.handleChange}
+              required
             />
-          </div>
-
-          <div className="formField">
-            <label className="formFieldCheckboxLabel">
+          </label>
+          <label>
+            <p>Nombre usuario</p>
+            <input
+              type="text"
+              id="user"
+              className="formFieldInput"
+              placeholder="Ingrese nombre"
+              name="user"
+              value={this.state.user}
+              onChange={this.handleChange}
+              required
+            />
+          </label>
+           <label >
+           <p></p>
               <input
                 className="formFieldCheckbox"
                 type="checkbox"
                 name="hasAgreed"
                 value={this.state.hasAgreed}
                 onChange={this.handleChange}
-              />{" "}
-              I agree all statements in{" "}
+              />{""}{' '}
+               Acepto los terminos de servicio{" "}{' '}
               <a href="null" className="formFieldTermsLink">
-                terms of service
+              <p>Terminos de servicio</p>
               </a>
-            </label>
-          </div>
-
-          <div className="formField">
-            <button className="formFieldButton">Sign Up</button>{" "}
-            <Link to="/sign-in" className="formFieldLink">
-              I'm already member
+            </label> 
+            
+          <div>
+          <p><button type="submit">Registrar</button></p>
+            {' '}O {' '}
+            <Link to="/login" className="formFieldLink">
+            {' '}Ya estoy registrado{' '}
             </Link>
           </div>
         </form>
       </div>
-    );
+    </div>
+    )
   }
 }
-export default SignUpForm;
+export default withRouter(SignUpForm);

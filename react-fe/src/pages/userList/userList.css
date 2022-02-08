@@ -29,3 +29,27 @@
     color: red;
     cursor: pointer;
 }
+
+.userAddButtons {
+  
+  width: 80px;
+  border: none;
+  padding: 10px;
+  background-color: teal;
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: 12px;
+}
+
+.userDeleteButton {
+  
+  width: 100px;
+  border: none;
+  padding: 10px;
+  background-color: rgb(194, 26, 26);
+  border-radius: 10px;
+  cursor: pointer;
+  color: white;
+  font-size: 12px;
+}

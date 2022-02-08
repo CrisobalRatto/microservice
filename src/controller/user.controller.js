@@ -19,15 +19,15 @@ var jwt_sign = function(payload, secret) {
     });
 }
 
-// registrar nuevo usuario en post
+// registrar nuevo usuario 
 exports.register_post = function(req, res) {
-    // extract req.body fields to create user
+    
     let user = (({
-        nombre, user, pass, rol
+        nombre, user, pass, 
     }) => ({nombre, 
         user, 
         pass, 
-        rol}))(req.body);
+        }))(req.body);
 
     // ver si esta
     User.findOne({user: user.user}).then((doc) => {
@@ -74,10 +74,10 @@ exports.login_post = function(req, res) {
         // crear jwt
         if (doc) {
             userInfo = (({
-                nombre, user, rol
+                nombre, user, 
             }) => ({nombre, 
                     user, 
-                    rol}))(doc);
+                    }))(doc);
                     // sign token
             return jwt_sign(userInfo, config.xx);
         } else {

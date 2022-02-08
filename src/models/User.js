@@ -1,5 +1,6 @@
 const config = require('../config.js');
 var mongoose = require('mongoose');
+const opts = { toJSON: { virtuals: true } };
 
 //usar mongoose promise 
 mongoose.Promise = global.Promise;
@@ -12,7 +13,7 @@ var userSchema = new mongoose.Schema({
     pass: String,
     rol: String,
     nombre: String
-});
+}, opts);
 
 module.exports = mongoose.model('User', userSchema);
 

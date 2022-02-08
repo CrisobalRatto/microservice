@@ -2,7 +2,7 @@ const {Router} = require ("express");
 const controllerClientes = require ("../controller/clientes.controller");
 
 const routerClientes = Router();
-
+const Cliente = require("../models/Cliente");
 var jwtVerify = require('../middleware/jwt');
 
 routerClientes.use(jwtVerify);
@@ -23,6 +23,13 @@ routerClientes.get("/:_id", controllerClientes.listarClienteID);
 
 //eliminar por id
 routerClientes.delete("/:_id", controllerClientes.eliminarClienteID);
+
+// delete a ninja from the db
+routerClientes.delete('/clientes/:id', function(req, res, next){
+    Cliente.findByIdAndRemove({id: req.params.id}).then(function(cliente){
+        res.send(cliente);
+    }).catch(next);
+});
 
 //modificar por id 
 routerClientes.put("/:_id",controllerClientes.modificarClienteID);

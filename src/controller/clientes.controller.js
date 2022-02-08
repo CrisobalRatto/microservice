@@ -41,6 +41,7 @@ exports.agregarClientes =  (req, res) => {
         }
     })
     res.send("nuevo cliente creado con exito")
+    res.status(201)
 }
 
 //listar por id
@@ -100,6 +101,7 @@ exports.modificarClienteID = (req,res) => {
         {
             upsert:true,
             new: true
+            
         }).then(() => {
             res.send("cliente actualizado")
     

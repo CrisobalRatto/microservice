@@ -1,7 +1,9 @@
 // Login.jsx
 import React, { Component  } from 'react';
 import { withRouter} from 'react-router-dom';
+import { Link } from "react-router-dom";
 import "./Login.css";
+
 //import { Redirect } from 'react-router'
 //import { Link } from "react-router-dom";
 
@@ -85,7 +87,13 @@ import "./Login.css";
           required/>
           </label>
           <div>
-            <button type="submit">Submit</button>
+          <p>&nbsp;</p>
+          <p><button  type="submit">Submit</button></p>
+          
+            {' '} O {' '}
+            <Link to="/register" className="formFieldLink">
+                 Quiero registrarme
+            </Link>
           </div>
         </form>
       </div>

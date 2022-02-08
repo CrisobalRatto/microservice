@@ -14,7 +14,7 @@ import ProductList from "./pages/productList/ProductList";
 import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 import withAuth from './pages/login/withAuth';
-
+import SignUpForm from "./pages/login/Signup";
 
 
 function App() {
@@ -34,7 +34,10 @@ function App() {
           <Route exact path="/" component={withAuth(Home)}>
           </Route>
           <Route path="/login">
-            <Login />
+            <Login/>
+          </Route>
+          <Route path="/register">
+            <SignUpForm/>
           </Route>
           <Route path="/users" component={withAuth(UserList)} >
           </Route>
