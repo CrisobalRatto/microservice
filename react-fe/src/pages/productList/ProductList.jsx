@@ -1,56 +1,110 @@
 import "./productList.css";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
-import { productRows } from "../../dummyData";
+//import { userRows } from "../../dummyData.jsx";
+//import React, { userRows  } from 'react';
 import { Link } from "react-router-dom";
-import { useState } from "react";
+//import * as React from 'react';
+import { useEffect, useState } from "react";
+import axios from 'axios';
+import * as React from 'react';  
 
 export default function ProductList() {
-  const [data, setData] = useState(productRows);
+  const [datauser, setData] = useState([]);
 
-  const handleDelete = (id) => {
-    setData(data.filter((item) => item.id !== id));
+  var [checkSelection, setCheckSelection] = React.useState();
+  const getProductData = async () => {
+    try {
+      var apiurl = process.env.REACT_APP_API_URL + '/api/producto/productosregistrados';
+      const data = await axios.get(apiurl, { withCredentials: true })
+      console.log(data.data);
+      setData(data.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
-  const columns = [
-    { field: "id", headerName: "ID", width: 90 },
+  useEffect(() => {
+     getProductData();
+  }, [ ]);
+
+
+    
+    const handleDelete = (_id) => {
+
+      var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
+      setData(datauser.filter((item) => item._id !== _id));
+    
+    axios.delete(apiurl + `${datauser._id}`, { withCredentials: true } , { data: datauser.filter((item) => item._id !== _id) }).then(
+
+    )
+
+  };
+
+
+const deleteCustomerByIds =  () => {
+
+  var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
+  for (let i = 0; i<1; i++) {
+    axios.delete(apiurl +`${checkSelection}`, { withCredentials: true }, { data: datauser } , {
+      
+ 
+    });
+
+  }
+ 
+}
+
+ 
+
+    const columns = [
+    { field: "_id", headerName: "SKU", width: 120 },
     {
-      field: "product",
-      headerName: "Producto",
+      field: "nombre",
+      headerName: "Nombre Producto",
       width: 200,
       renderCell: (params) => {
         return (
-          <div className="productListItem">
-            <img className="productListImg" src={params.row.img} alt="" />
-            {params.row.name}
+          <div className="userListUser">
+            <img className="userListImg" src={params.row.avatar} alt="" />
+            {params.row.nombre}
           </div>
         );
       },
     },
-    { field: "stock", headerName: "Stock", width: 200 },
+    { field: "descripcion", headerName: "Descripcion", width: 200 },
+
     {
-      field: "status",
-      headerName: "Status",
+      field: "precio",
+      headerName: "Precio",
       width: 120,
     },
     {
-      field: "price",
-      headerName: "Precio",
-      width: 160,
+      field: "fechaCreacion",
+      headerName: "Fecha Creacion",
+      width: 120,
     },
     {
+      field: "fechaModificacion",
+      headerName: "Fecha Modificacion",
+      width: 120,
+    },
+    
+    {
       field: "action",
-      headerName: "Accion",
+      headerName: "Action",
       width: 150,
       renderCell: (params) => {
         return (
           <>
-            <Link to={"/product/" + params.row.id}>
-              <button className="productListEdit">Edit</button>
+          
+            <Link to={"/product/" + params.row._id}>
+              <button className="userListEdit">Editar</button>
             </Link>
             <DeleteOutline
-              className="productListDelete"
-              onClick={() => handleDelete(params.row.id)}
+              className="userListDelete"
+              onClick={() => handleDelete(params.row._id)}
+              // {(e) => HandleDelete(data._id, e)}
             />
           </>
         );
@@ -60,14 +114,45 @@ export default function ProductList() {
 
   return (
     <div className="productList">
+
+      <button
+        className="userDeleteButton"
+        //onClick={deleteCustomerByIds}
+        onClick={deleteCustomerByIds}
+        // onClick={() => {
+        //   deleteCustomerByIds();
+        // }}
+
+        //onClick={() => deleteCustomerByIds(checkSelection)}
+        //onClick={() => {if(window.confirm('¿Esta seguro?')){deleteCustomerByIds(checkSelection)};}}
+        >
+      
+        Borrar eleccionados
+      </button>
+      <Link to="/newProduct">
+          <button className="userAddButtons">Agregar Producto</button>
+        </Link>
       <DataGrid
-        rows={data}
-        disableSelectionOnClick
+        rows={datauser}
+        //data={datauser}
+        getRowId={(rows) => rows._id}
+        //disableSelectionOnClick
+        enableCellSelect
         columns={columns}
         pageSize={8}
-        checkboxSelection
+        value={datauser}
+        checkboxSelection 
+        onSelectionModelChange={(newSelectionModel) => {
+          setCheckSelection(newSelectionModel);
+        }}
+        newSelectionModel={checkSelection}
+        components={{
+          Toolbar: GridToolbar,
+        }}
+      
       />
       
     </div>
   );
+  
 }

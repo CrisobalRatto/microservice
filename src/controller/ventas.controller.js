@@ -86,6 +86,32 @@ exports.agregarVentas = async (req, res)=>{
 }
 
 
+//Agregar ventas
+exports.eliminarVentaIDBulk = async (req, res)=>{
+   
+    await Producto.deleteMany(
+        {
+          _id: {
+            $in: req.body
+          }
+        },
+        function(err, result) {
+          if (err) {
+       
+            res.json({"error": "error producto no encontrado"});
+          } else {
+            res.send(result);
+          }
+        }
+      );     
+   
+}
+
+
+
+
+
+
 // {status: 200, description : "servicio ejecutado correctamente ", 
 // data: {id: valor, descripcion: etc etc}}
 //Order.find(any order).populate([ { path: 'orderItems.product', model: 'Order', populate: [ { path: 'user', model: 'User', select: 'name', }, ], }, ])

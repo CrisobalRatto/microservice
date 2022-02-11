@@ -24,6 +24,12 @@ routerClientes.get("/:_id", controllerClientes.listarClienteID);
 //eliminar por id
 routerClientes.delete("/:_id", controllerClientes.eliminarClienteID);
 
+//eliminar muchos id
+routerClientes.delete("/", controllerClientes.eliminarClienteIDBulk);
+
+
+
+
 // delete a ninja from the db
 routerClientes.delete('/clientes/:id', function(req, res, next){
     Cliente.findByIdAndRemove({id: req.params.id}).then(function(cliente){

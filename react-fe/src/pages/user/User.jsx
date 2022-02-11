@@ -198,7 +198,7 @@ function update (event) {
                   name="apellidoPaterno"
                   onChange={handleChange}
                   value={name.apellidoPaterno}
-                  placeholder=""
+                  placeholder={posts.apellidoPaterno}
                   className="userUpdateInput"
                 />
               </div>
@@ -209,7 +209,7 @@ function update (event) {
                   name="apellidoMaterno"
                   onChange={handleChange}
                   value={name.apellidoMaterno}
-                  placeholder=""
+                  placeholder={posts.apellidoMaterno}
                   className="userUpdateInput"
                 />
               </div>
@@ -220,30 +220,35 @@ function update (event) {
                   name="nombre"
                   onChange={handleChange}
                   value={name.nombre}
-                  placeholder=""
+                  placeholder={posts.nombre}
                   className="userUpdateInput"
                 />
               </div>
               <div className="userUpdateItem">
                 <label>Fecha Nacimiento</label>
-                <Dates />
-                <input
+                <Dates type="text"
+                  name="fechaNacimiento"
+                  onChange={handleChange}
+                  value={name.fechaNacimiento}
+                  placeholder={posts.fechaNacimiento}
+                  className="userUpdateInput"/>
+                {/* <input
                 
                   type="text"
                   name="fechaNacimiento"
                   onChange={handleChange}
                   value={name.fechaNacimiento}
-                  placeholder=""
+                  placeholder={posts.fechaNacimiento}
                   className="userUpdateInput"
-                />
+                /> */}
               </div>
               <div className="newUserItem">
           <label>Sexo</label>
           <div className="newUserGender">
-            <input type="radio" name="gender" id="male" value="false" />
-            <label for="male">Masculino</label>
-            <input type="radio" name="gender" id="female" value="true" />
-            <label for="female">Femenino</label>
+            <input type="radio" name="sexo" checked={posts.sexo}  onChange={handleChange} value={posts.sexo}   />
+            <label for="false">Masculino</label>
+            <input type="radio" name="sexo" checked={posts.sexo} onChange={handleChange} value='true'   />
+            <label for="true">Femenino</label>
           </div>
         </div>
               <div className="userUpdateItem">

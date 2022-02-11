@@ -1,5 +1,5 @@
 import "./userList.css";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 //import { userRows } from "../../dummyData.jsx";
 //import React, { userRows  } from 'react';
@@ -9,10 +9,10 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import * as React from 'react';  
 
-export default function UserList() {
-  const [datauser, setData] = useState([]);
-
-  var [checkSelection, setCheckSelection] = React.useState();
+export default function SaleList() {
+  const [data, setData] = useState([]);
+ 
+  const [checkSelection, setCheckSelection] = React.useState([]);
   const getProductData = async () => {
     try {
       var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/clientesregistrados';
@@ -24,36 +24,66 @@ export default function UserList() {
     }
   };
 
-  useEffect( () => {
+  useEffect(() => {
     getProductData();
   }, [ ]);
 
-  React.useEffect(() => {
-    console.log("Selections State Hook", checkSelection);
-  }, [checkSelection]);
+    //console.log(data)
+    React.useEffect(() => {
+      console.log("Selections State Hook", checkSelection);
+    }, [checkSelection]);
+
 
     
-    const handleDelete = async (_id) => {
+    const handleDelete = (_id) => {
 
       var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
-      setData(datauser.filter((item) => item._id !== _id));
+      setData(data.filter((item) => item._id !== _id));
     
-    await axios.delete(apiurl + `${datauser._id}`, { withCredentials: true } , { data: datauser.filter((item) => item._id !== _id) }).then(
+    axios.delete(apiurl + `${data._id}`, { withCredentials: true } , { data: data.filter((item) => item._id !== _id) }).then(
 
     )
 
   };
 
 
+
 const deleteCustomerByIds = async () => {
-  console.log('lmao',checkSelection)
+  //e.preventDefault();
+  let users = [];
   var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
-  
-  await axios.delete(apiurl, { data: checkSelection , withCredentials: true });
-  getProductData();
-  
+  for (const _id in checkSelection) {
+    const response = await axios.delete(apiurl +`${_id}`, { withCredentials: true }, {
+      
+ 
+    });
+    users.push(response);
+    console.log(response)
+  }
  
 }
+
+
+  // const deleteCustomerByIds = () => {
+  //   let arrayids = checkSelection;
+  //   console.log(checkSelection)
+  //   console.log(arrayids)
+  //   var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
+    
+  //   var forEachData = ''
+  //   console.log(forEachData)
+  //   axios
+  //     .delete(apiurl +`${arrayids.forEach(d => forEachData += `${d._id}`)}`, { withCredentials: true },{
+      
+  //       data: { arrayids }
+  //     });
+  //     //   console.log(data);
+  //     //   getCustomer();
+  //     // })
+  //     // .catch(err => alert(err));
+      
+  // };
+
 
  
 
@@ -110,17 +140,17 @@ const deleteCustomerByIds = async () => {
       },
     },
   ];
-
+   
   return (
     <div className="userList">
 
       <button
         className="userDeleteButton"
         //onClick={deleteCustomerByIds}
-        onClick={deleteCustomerByIds}
-        // onClick={() => {
-        //   deleteCustomerByIds();
-        // }}
+        
+        onClick={() => {
+          deleteCustomerByIds();
+        }}
 
         //onClick={() => deleteCustomerByIds(checkSelection)}
         //onClick={() => {if(window.confirm('¿Esta seguro?')){deleteCustomerByIds(checkSelection)};}}
@@ -132,22 +162,19 @@ const deleteCustomerByIds = async () => {
           <button className="userAddButtons">Crear Usuario</button>
         </Link>
       <DataGrid
-        rows={datauser}
-        //data={datauser}
+        rows={data}
         getRowId={(rows) => rows._id}
         //disableSelectionOnClick
         enableCellSelect
         columns={columns}
         pageSize={8}
-        value={datauser}
-        checkboxSelection 
+        value={data._id}
+        checkboxSelection
         onSelectionModelChange={(newSelectionModel) => {
           setCheckSelection(newSelectionModel);
         }}
         newSelectionModel={checkSelection}
-        components={{
-          Toolbar: GridToolbar,
-        }}
+        {...data}
       
       />
       

@@ -44,11 +44,12 @@ export default function Sidebar() {
                 Productos
               </li>
             </Link>
+            <Link to="/sales" className="link">
             <li className="sidebarListItem">
               <AttachMoney className="sidebarIcon" />
               Ventas
             </li>
-            
+            </Link>
           </ul>
 
 

@@ -83,38 +83,43 @@ class NewUser extends Component {
         <form className="newUserForm">
           <div className="newUserItem">
             <label>Apellido Paterno</label>
-            <input type="text" name="apellidoPaterno" 
+            <input type="text"  name="apellidoPaterno" 
             value={this.state.apellidoPaterno}
             onChange={this.handleChange} 
-             />
+            required />
           </div>
           <div className="newUserItem">
             <label>Apellido Materno</label>
             <input type="text" name="apellidoMaterno"
             value={this.state.apellidoMaterno}
-            onChange={this.handleChange}  />
+            onChange={this.handleChange} 
+            required />
           </div>
           <div className="newUserItem">
             <label>Nombre</label>
             <input type="text" name="nombre"
             value={this.state.nombre}
-            onChange={this.handleChange} />
+            onChange={this.handleChange} 
+            required />
           </div>
           <div className="newUserItem">
             <label>Fecha Nacimieto</label>
-            <Dates name="fechaNacimiento" value={this.state.fechaNacimiento} />
+            <Dates name="fechaNacimiento" value={this.state.fechaNacimiento} onChange={this.handleChange} 
+            required/>
           </div>
   
           <div className="newUserItem">
             <label>Telefono</label>
             <input type="text" name="telefono" value={this.state.telefono}
-            onChange={this.handleChange} />
+            onChange={this.handleChange} 
+            required />
           </div>
           <div className="newUserItem">
             <label>Direccion</label>
             <input type="text" name="direccion"
             value={this.state.direccion}
-            onChange={this.handleChange} />
+            onChange={this.handleChange} 
+            required />
           </div>
           <div className="newUserItem">
             <label>Sexo</label>
