@@ -15,7 +15,7 @@ export default function SaleList() {
   const [checkSelection, setCheckSelection] = React.useState([]);
   const getProductData = async () => {
     try {
-      var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/clientesregistrados';
+      var apiurl = process.env.REACT_APP_API_URL + '/api/venta/ventasregistradas';
       const data = await axios.get(apiurl, { withCredentials: true })
       console.log(data.data);
       setData(data.data);
@@ -89,28 +89,16 @@ const deleteCustomerByIds = async () => {
 
     const columns = [
     { field: "_id", headerName: "ID", width: 90 },
+ 
+    { field: "folio", headerName: "Folio", width: 200 },
     {
-      field: "nombre",
-      headerName: "Nombre",
-      width: 200,
-      renderCell: (params) => {
-        return (
-          <div className="userListUser">
-            <img className="userListImg" src={params.row.avatar} alt="" />
-            {params.row.nombre}
-          </div>
-        );
-      },
-    },
-    { field: "apellidoPaterno", headerName: "ApellidoPaterno", width: 200 },
-    {
-      field: "apellidoMaterno",
-      headerName: "ApellidoMaterno",
+      field: "idCliente",
+      headerName: "idCliente",
       width: 120,
     },
     {
-      field: "fechaCreacion",
-      headerName: "Fecha Creacion",
+      field: "cantidad",
+      headerName: "Cantidad",
       width: 120,
     },
     {
