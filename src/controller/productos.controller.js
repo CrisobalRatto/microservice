@@ -91,6 +91,23 @@ exports.eliminarProductoID = (req,res) => {
 
 } 
 
+//eliminando clientes
+exports.eliminarProductoIDBulk = async (req, res)=>{
+    try { 
+     await Cliente.deleteMany(
+         {
+           _id: {
+             $in: req.body
+           }
+         },
+         
+       );    
+         res.json({response:'success'})
+     } catch (error ) {
+         res.json({error})
+     }
+ }
+
 
 
 //modificar producto por id

@@ -76,17 +76,10 @@ exports.agregarVentas = async (req, res)=>{
          .catch((err) => res.send(err));
         res.json(venta); 
     });
-
-
-
-
-
-
-
 }
 
 
-//Agregar ventas
+//eliminar ventas
 exports.eliminarVentaIDBulk = async (req, res)=>{
    
     await Producto.deleteMany(

@@ -24,10 +24,11 @@ routerProductos.get("/:_id", controllerProductos.listarProductoID);
 //eliminar por id
 routerProductos.delete("/:_id", controllerProductos.eliminarProductoID);
 
+//eliminar productos
+routerProductos.delete("/", controllerProductos.eliminarProductoIDBulk);
+
 //modificar por id 
 routerProductos.put("/modificar/:_id",controllerProductos.modificarProductoID);
-
-
 
 
 

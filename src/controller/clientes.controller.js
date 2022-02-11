@@ -82,6 +82,7 @@ exports.eliminarClienteID = (req,res) => {
 
 
 //eliminando clientes
+
 exports.eliminarClienteIDBulk = async (req, res)=>{
    try { 
     await Cliente.deleteMany(
@@ -90,7 +91,7 @@ exports.eliminarClienteIDBulk = async (req, res)=>{
             $in: req.body
           }
         },
-        
+
       );    
         res.json({response:'success'})
     } catch (error ) {

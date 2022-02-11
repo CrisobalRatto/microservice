@@ -11,7 +11,7 @@ import * as React from 'react';
 
 export default function ProductList() {
   const [datauser, setData] = useState([]);
-
+  console.log(datauser)
   var [checkSelection, setCheckSelection] = React.useState();
   const getProductData = async () => {
     try {
@@ -26,8 +26,10 @@ export default function ProductList() {
 
   useEffect(() => {
      getProductData();
+     
   }, [ ]);
 
+    
 
     
     const handleDelete = (_id) => {
@@ -42,18 +44,15 @@ export default function ProductList() {
   };
 
 
-const deleteCustomerByIds =  () => {
-
-  var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
-  for (let i = 0; i<1; i++) {
-    axios.delete(apiurl +`${checkSelection}`, { withCredentials: true }, { data: datauser } , {
-      
- 
-    });
-
+  const deleteProductByIds = async () => {
+    console.log('lmao',checkSelection)
+    var apiurl = process.env.REACT_APP_API_URL + '/api/producto/';
+    
+    await axios.delete(apiurl, { data: checkSelection , withCredentials: true });
+    getProductData();
+    
+   
   }
- 
-}
 
  
 
@@ -93,19 +92,37 @@ const deleteCustomerByIds =  () => {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      width: 220,
       renderCell: (params) => {
         return (
           <>
+            
           
+  
+            <input type="number" id="quantity" name="quantity"  min="1" max="10" />
+
+  
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+          
+
+            
+
+
             <Link to={"/product/" + params.row._id}>
               <button className="userListEdit">Editar</button>
             </Link>
+
+
             <DeleteOutline
               className="userListDelete"
               onClick={() => handleDelete(params.row._id)}
               // {(e) => HandleDelete(data._id, e)}
             />
+
+
+
+            
           </>
         );
       },
@@ -118,7 +135,7 @@ const deleteCustomerByIds =  () => {
       <button
         className="userDeleteButton"
         //onClick={deleteCustomerByIds}
-        onClick={deleteCustomerByIds}
+        onClick={deleteProductByIds}
         // onClick={() => {
         //   deleteCustomerByIds();
         // }}
@@ -127,16 +144,19 @@ const deleteCustomerByIds =  () => {
         //onClick={() => {if(window.confirm('¿Esta seguro?')){deleteCustomerByIds(checkSelection)};}}
         >
       
-        Borrar eleccionados
+        Borrar seleccionados
       </button>
       <Link to="/newProduct">
           <button className="userAddButtons">Agregar Producto</button>
+        </Link>
+      <Link to="/newSale">
+          <button className="userAddButtons" onClick={deleteProductByIds} >Vender selecc</button>
         </Link>
       <DataGrid
         rows={datauser}
         //data={datauser}
         getRowId={(rows) => rows._id}
-        //disableSelectionOnClick
+        disableSelectionOnClick
         enableCellSelect
         columns={columns}
         pageSize={8}

@@ -49,9 +49,11 @@ function App() {
           </Route>
           <Route path="/product/:productId" component={withAuth(Product)}>
           </Route>
-          <Route path="/newproduct" component={withAuth(NewProduct)}>
+          <Route path="/newProduct" component={withAuth(NewProduct)}>
           </Route>
           <Route path="/sales" component={withAuth(ProductList)}>
+          </Route>
+          <Route path="/newsale" component={withAuth(NewProduct)}>
           </Route>
           <Route path="/sales/:salesId" component={withAuth(Product)}>
           </Route>
