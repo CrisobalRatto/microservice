@@ -48,15 +48,16 @@ exports.agregarVentas = async (req, res)=>{
                 res.json({"error": "error producto no encontrado"});
 
             };
-        
+        const iva = producto.precio * 0.19
+        const cantidad = req.body.cantidad
         var newVenta = {
 
             folio: req.body.folio,
             idCliente: mongoose.Types.ObjectId(req.body.idCliente),
             // idProducto: mongoose.Types.ObjectId(req.body.idProducto),
-            cantidad: req.body.cantidad,
+            cantidad ,
             subtotal: producto.precio,
-            iva: producto.precio * 0.19 ,
+            iva ,
             total: (producto.precio + iva) * cantidad ,
             fechaCreacion: new Date(),
             fechaModificacion: new Date()
@@ -66,14 +67,7 @@ exports.agregarVentas = async (req, res)=>{
         console.log("venta: ",venta);
         venta
         .save()    
-        .then((venta) => {
-           if (venta) {
-             res.status(200).send("Orden completada",data);
-           } else {
-             res.status(400).send("orden no se pudo completar");
-           }
-         })
-         .catch((err) => res.send(err));
+        
         res.json(venta); 
     });
 }

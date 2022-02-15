@@ -13,6 +13,7 @@ export default function UserList() {
   const [datauser, setData] = useState([]);
 
   var [checkSelection, setCheckSelection] = React.useState();
+  
   const getProductData = async () => {
     try {
       var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/clientesregistrados';

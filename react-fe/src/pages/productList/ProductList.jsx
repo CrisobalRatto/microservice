@@ -3,16 +3,23 @@ import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 //import { userRows } from "../../dummyData.jsx";
 //import React, { userRows  } from 'react';
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 //import * as React from 'react';
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import * as React from 'react';  
+import * as React from 'react'; 
+import Select from 'react-select'; 
 
 export default function ProductList() {
-  const [datauser, setData] = useState([]);
-  console.log(datauser)
+  const [productData, setData] = useState([]);
+  const [userData, setDataUser] = useState([]);
+  console.log(userData)
+  console.log(productData)
   var [checkSelection, setCheckSelection] = React.useState();
+  const [selectedOption, setSelectedOption] = useState();
+  console.log(selectedOption)
+
+
   const getProductData = async () => {
     try {
       var apiurl = process.env.REACT_APP_API_URL + '/api/producto/productosregistrados';
@@ -23,6 +30,30 @@ export default function ProductList() {
       console.log(e);
     }
   };
+  
+  const getClients = async () => {
+    try {
+      var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/clientesregistrados';
+      const data = await axios.get(apiurl, { withCredentials: true })
+      console.log(data.data);
+      const newUserData = data.data.map((user) => ({label: user.nombre +" "+ user.apellidoPaterno, value:user._id }))
+      setDataUser(newUserData);
+
+
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+
+
+
+console.log(userData)
+
+useEffect( () => {
+  getClients();
+}, [ ]);
+
 
   useEffect(() => {
      getProductData();
@@ -30,18 +61,48 @@ export default function ProductList() {
   }, [ ]);
 
     
+  const onQuantityChange = (e, _id) => {
+    console.log(e)
+    console.log(_id)
+     console.log(productData)
 
+     for (let i = 0; i < productData.length; i++) {
+      if (productData[i]?._id === _id ) { 
+        productData[i].quantity= e.target.value
+      }
+    }
+
+
+
+  }
     
     const handleDelete = (_id) => {
 
       var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
-      setData(datauser.filter((item) => item._id !== _id));
-    
-    axios.delete(apiurl + `${datauser._id}`, { withCredentials: true } , { data: datauser.filter((item) => item._id !== _id) }).then(
+      setData(productData.filter((item) => item._id !== _id));
+      
+    axios.delete(apiurl + `${productData._id}`, { withCredentials: true } , { data: productData.filter((item) => item._id !== _id) }).then(
 
     )
 
   };
+
+
+  const bulkSale = async () => {
+      console.log(selectedOption)
+      console.log(checkSelection)
+      var apiurl = process.env.REACT_APP_API_URL + '/api/venta/';
+      
+
+      checkSelection.forEach( async idProducto => { 
+        
+        const productQuantity = productData.find( (producto) => producto._id === idProducto )?.quantity
+        await axios.post( apiurl, {idProducto, idCliente:selectedOption.value, cantidad:productQuantity }, { withCredentials: true })
+      });
+
+
+
+  }
 
 
   const deleteProductByIds = async () => {
@@ -99,7 +160,11 @@ export default function ProductList() {
             
           
   
-            <input type="number" id="quantity" name="quantity"  min="1" max="10" />
+            <input type="number" id="quantity" name="quantity"  min="1" max="10" defaultValue={1} onChange={(e) => {
+              onQuantityChange(e, params.row._id)
+            }} />
+
+
 
   
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -146,21 +211,29 @@ export default function ProductList() {
       
         Borrar seleccionados
       </button>
+      
       <Link to="/newProduct">
           <button className="userAddButtons">Agregar Producto</button>
         </Link>
-      <Link to="/newSale">
-          <button className="userAddButtons" onClick={deleteProductByIds} >Vender selecc</button>
-        </Link>
+      
+          <button className="userAddButtons" onClick={bulkSale} >Vender selecc</button>
+        
+
+        <Select
+        defaultValue={selectedOption}
+        onChange={setSelectedOption}
+        options={userData}
+      />
+
       <DataGrid
-        rows={datauser}
-        //data={datauser}
+        rows={productData}
+        //data={productData}
         getRowId={(rows) => rows._id}
         disableSelectionOnClick
         enableCellSelect
         columns={columns}
         pageSize={8}
-        value={datauser}
+        value={productData}
         checkboxSelection 
         onSelectionModelChange={(newSelectionModel) => {
           setCheckSelection(newSelectionModel);
