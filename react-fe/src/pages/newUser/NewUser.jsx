@@ -5,6 +5,17 @@ import React, { Component } from "react";
 
 import { withRouter} from 'react-router-dom';
 
+
+const initialState = {
+  name: "",
+  email: "",
+  password: "",
+  nameError: "",
+  emailError: "",
+  passwordError: ""
+};
+
+
 class NewUser extends Component {
   constructor() {
     super();
@@ -23,6 +34,9 @@ class NewUser extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+
+
+
   _handleRadio(event) {
     const sexo = event.currentTarget.value === 'true' ? true: false;
     console.log('handle', sexo);
@@ -37,6 +51,30 @@ class NewUser extends Component {
     });
   }
 
+  validate = () => {
+    let nameError = "";
+    let emailError = "";
+    // let passwordError = "";
+
+    if (!this.state.name) {
+      nameError = "name cannot be blank";
+    }
+
+    if (!this.state.email.includes("@")) {
+      emailError = "invalid email";
+    }
+
+
+
+
+
+    if (emailError || nameError) {
+      this.setState({ emailError, nameError });
+      return false;
+    }
+
+    return true;
+  };
 
   handleSubmit = (event) => {
     //const[login,setIsLoggedIn]=useState(false)

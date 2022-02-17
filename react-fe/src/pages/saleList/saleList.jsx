@@ -1,19 +1,19 @@
-import "./userList.css";
-import { DataGrid } from "@material-ui/data-grid";
+import "./saleList.css";
+import { DataGrid, GridToolbar} from "@material-ui/data-grid";
 import { DeleteOutline } from "@material-ui/icons";
 //import { userRows } from "../../dummyData.jsx";
 //import React, { userRows  } from 'react';
-import { Link } from "react-router-dom";
+//import { Link } from "react-router-dom";
 //import * as React from 'react';
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import * as React from 'react';  
 
 export default function SaleList() {
-  const [data, setData] = useState([]);
+  const [datasale, setData] = useState([]);
  
   const [checkSelection, setCheckSelection] = React.useState([]);
-  const getProductData = async () => {
+  const getSaleData = async () => {
     try {
       var apiurl = process.env.REACT_APP_API_URL + '/api/venta/ventasregistradas';
       const data = await axios.get(apiurl, { withCredentials: true })
@@ -25,7 +25,7 @@ export default function SaleList() {
   };
 
   useEffect(() => {
-    getProductData();
+    getSaleData();
   }, [ ]);
 
     //console.log(data)
@@ -37,10 +37,10 @@ export default function SaleList() {
     
     const handleDelete = (_id) => {
 
-      var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
-      setData(data.filter((item) => item._id !== _id));
+      var apiurl = process.env.REACT_APP_API_URL + '/api/venta/';
+      setData(datasale.filter((item) => item._id !== _id));
     
-    axios.delete(apiurl + `${data._id}`, { withCredentials: true } , { data: data.filter((item) => item._id !== _id) }).then(
+    axios.delete(apiurl + `${datasale._id}`, { withCredentials: true } , { data: datasale.filter((item) => item._id !== _id) }).then(
 
     )
 
@@ -48,20 +48,19 @@ export default function SaleList() {
 
 
 
-const deleteCustomerByIds = async () => {
-  //e.preventDefault();
-  let users = [];
-  var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
-  for (const _id in checkSelection) {
-    const response = await axios.delete(apiurl +`${_id}`, { withCredentials: true }, {
-      
- 
-    });
-    users.push(response);
-    console.log(response)
-  }
+
+
+const deleteSalesByIds = async () => {
+  console.log('lmao',checkSelection)
+  var apiurl = process.env.REACT_APP_API_URL + '/api/venta/';
+  
+  await axios.delete(apiurl, { data: checkSelection , withCredentials: true });
+  getSaleData();
+  
  
 }
+
+
 
 
   // const deleteCustomerByIds = () => {
@@ -88,25 +87,36 @@ const deleteCustomerByIds = async () => {
  
 
     const columns = [
-    { field: "_id", headerName: "ID", width: 90 },
+    { field: "_id", headerName: "Folio", width: 160 },
  
-    { field: "folio", headerName: "Folio", width: 200 },
     {
       field: "idCliente",
       headerName: "idCliente",
-      width: 120,
+      width: 160,
     },
     {
       field: "cantidad",
       headerName: "Cantidad",
-      width: 120,
+      width: 160,
     },
     {
-      field: "fechaModificacion",
-      headerName: "Fecha Modificacion",
-      width: 120,
+      field: "fechaCreacion",
+      headerName: "Fecha Venta",
+      width: 160,
     },
-    
+    {
+      field: "total",
+      headerName: "Total venta",
+      width: 160,
+    },
+    // {
+    //   field: "idProducto",
+    //   headerName: "idProducto",
+    //   width: 160,
+    // },
+
+
+
     {
       field: "action",
       headerName: "Action",
@@ -115,9 +125,7 @@ const deleteCustomerByIds = async () => {
         return (
           <>
           
-            <Link to={"/user/" + params.row._id}>
-              <button className="userListEdit">Edit</button>
-            </Link>
+
             <DeleteOutline
               className="userListDelete"
               onClick={() => handleDelete(params.row._id)}
@@ -134,11 +142,11 @@ const deleteCustomerByIds = async () => {
 
       <button
         className="userDeleteButton"
-        //onClick={deleteCustomerByIds}
+        onClick={deleteSalesByIds}
         
-        onClick={() => {
-          deleteCustomerByIds();
-        }}
+        // onClick={() => {
+        //   deleteCustomerByIds();
+        // }}
 
         //onClick={() => deleteCustomerByIds(checkSelection)}
         //onClick={() => {if(window.confirm('¿Esta seguro?')){deleteCustomerByIds(checkSelection)};}}
@@ -146,23 +154,23 @@ const deleteCustomerByIds = async () => {
       
         Borrar eleccionados
       </button>
-      <Link to="/newUser">
-          <button className="userAddButtons">Crear Usuario</button>
-        </Link>
+
       <DataGrid
-        rows={data}
+        rows={datasale}
         getRowId={(rows) => rows._id}
         //disableSelectionOnClick
         enableCellSelect
         columns={columns}
         pageSize={8}
-        value={data._id}
+        value={datasale}
         checkboxSelection
         onSelectionModelChange={(newSelectionModel) => {
           setCheckSelection(newSelectionModel);
         }}
         newSelectionModel={checkSelection}
-        {...data}
+        components={{
+          Toolbar: GridToolbar,
+        }}
       
       />
       

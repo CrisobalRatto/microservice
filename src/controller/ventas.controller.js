@@ -73,28 +73,23 @@ exports.agregarVentas = async (req, res)=>{
 }
 
 
-//eliminar ventas
+
 exports.eliminarVentaIDBulk = async (req, res)=>{
-   
-    await Producto.deleteMany(
-        {
-          _id: {
-            $in: req.body
-          }
-        },
-        function(err, result) {
-          if (err) {
-       
-            res.json({"error": "error producto no encontrado"});
-          } else {
-            res.send(result);
-          }
-        }
-      );     
-   
-}
-
-
+    try { 
+     await Venta.deleteMany(
+         {
+           _id: {
+             $in: req.body
+           }
+         },
+ 
+       );    
+         res.json({response:'success'})
+     } catch (error ) {
+         res.json({error})
+     }
+ }
+ 
 
 
 

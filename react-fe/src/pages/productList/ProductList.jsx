@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import * as React from 'react'; 
 import Select from 'react-select'; 
+import swal from 'sweetalert'
 
 export default function ProductList() {
   const [productData, setData] = useState([]);
@@ -92,14 +93,25 @@ useEffect( () => {
       console.log(selectedOption)
       console.log(checkSelection)
       var apiurl = process.env.REACT_APP_API_URL + '/api/venta/';
-      
-
       checkSelection.forEach( async idProducto => { 
         
         const productQuantity = productData.find( (producto) => producto._id === idProducto )?.quantity
-        await axios.post( apiurl, {idProducto, idCliente:selectedOption.value, cantidad:productQuantity }, { withCredentials: true })
-      });
-
+        await axios.post( apiurl, {idProducto, idCliente:selectedOption.value, cantidad:productQuantity }, { withCredentials: true }).then(response => { 
+          console.log(response)
+          swal({
+            title: "Venta exitosa",
+            text: "Puede ver las ventas en el menu Ventas",
+            icon: "success",
+            timer: 100000,
+            button: true
+          })
+          this.setState({ redirect: this.state.redirect === false });
+      })
+      .catch(err => { 
+        console.log(err) 
+      });   
+      })
+      
 
 
   }

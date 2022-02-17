@@ -3,6 +3,9 @@ const bodyParser = require('body-parser');
 const clientSessions = require('client-sessions');
 const cors = require('cors')
 var routerUser = require('./routes/user.routes');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUI = require('swagger-ui-express');
+
 // var index = require('./routes/index');
 // var api = require('./routes/api');
 
@@ -39,6 +42,21 @@ app.use(cors({
 module.exports= app;
  
 
+// swagger 
+
+const swaggerOptions = {
+    swaggerDefinition: {
+      info: {
+        title: "API aligare",
+        version: '1.0.0',
+      },
+    },
+    apis: ["/home/cris20xx/Desktop/microservice/src/routes/*.js"]
+  };
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocs));
+
 
 // parse setting
 app.use(bodyParser.json());
@@ -67,10 +85,26 @@ app.use(clientSessions({
 }))
 
 // llamado rutas
+
+
+
+
+
 app.use('/user', routerUser);
 app.use('/api/token', routerToken);
 app.use("/api/producto", routerProductos);
 app.use("/api/cliente", routerClientes);
 app.use("/api/venta", routerVentas);
 
+
+
+
+
+
+
+
+
+
 module.exports = app;
+
+

@@ -30,7 +30,7 @@ exports.inicioProductos = (req, res) => {
 
 exports.agregarProductos = (req, res) => {
     var newProducto = {
-        sku: req.body.sku,
+        
         nombre: req.body.nombre,
         marca: req.body.marca,
         descripcion: req.body.descripcion,
@@ -38,8 +38,8 @@ exports.agregarProductos = (req, res) => {
         fechaCreacion: new Date(),
         fechaModificacion: new Date()
     }
-    var Producto = new Producto(newProducto)
-    Producto.save().then(() => {
+    var producto = new Producto(newProducto)
+    producto.save().then(() => {
         console.log("nuevo producto creado")
     }).catch((err) => {
         if(err){

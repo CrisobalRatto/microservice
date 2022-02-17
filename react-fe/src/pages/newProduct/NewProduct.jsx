@@ -10,7 +10,7 @@ class NewProduct extends Component {
     super();
 
     this.state = {
-      sku: "",
+      
       nombre: "",
       marca: "",
       descripcion: "",

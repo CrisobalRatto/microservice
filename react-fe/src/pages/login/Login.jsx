@@ -63,7 +63,7 @@ import "./Login.css";
     })
     .catch(err => {
       console.error(err);
-      alert('error intente logear nuevamente');
+      alert('Username o Password incorrectos');
     });
   }
   render() {

@@ -15,7 +15,7 @@ import Product from "./pages/product/Product";
 import NewProduct from "./pages/newProduct/NewProduct";
 import withAuth from './pages/login/withAuth';
 import SignUpForm from "./pages/login/Signup";
-
+import SaleList from './pages/saleList/saleList'
 
 function App() {
 
@@ -51,7 +51,7 @@ function App() {
           </Route>
           <Route path="/newProduct" component={withAuth(NewProduct)}>
           </Route>
-          <Route path="/sales" component={withAuth(ProductList)}>
+          <Route path="/sales" component={withAuth(SaleList)}>
           </Route>
           <Route path="/newsale" component={withAuth(NewProduct)}>
           </Route>

@@ -19,6 +19,9 @@ routerVentas.get("/:_id", controllerVentas.listarVentasID);
 //eliminar por id
 routerVentas.delete("/:_id", controllerVentas.eliminarVentaID);
 
+//eliminar varios a la vez
+routerVentas.delete("/", controllerVentas.eliminarVentaIDBulk);
+
 //modificar por id 
 routerVentas.put("/modificar/:_id",controllerVentas.modificarVentaID);
 

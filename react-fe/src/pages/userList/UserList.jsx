@@ -130,7 +130,7 @@ const deleteCustomerByIds = async () => {
         Borrar eleccionados
       </button>
       <Link to="/newUser">
-          <button className="userAddButtons">Crear Usuario</button>
+          <button className="userAddButtons">Crear Cliente</button>
         </Link>
       <DataGrid
         rows={datauser}
