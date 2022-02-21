@@ -10,6 +10,7 @@ import axios from 'axios';
 import * as React from 'react'; 
 import Select from 'react-select'; 
 import swal from 'sweetalert'
+import dateFormat from 'dateformat'
 
 export default function ProductList() {
   const [productData, setData] = useState([]);
@@ -18,7 +19,9 @@ export default function ProductList() {
   console.log(productData)
   var [checkSelection, setCheckSelection] = React.useState();
   const [selectedOption, setSelectedOption] = useState();
-  console.log(selectedOption)
+  
+  console.log(checkSelection)
+
 
 
   const getProductData = async () => {
@@ -61,25 +64,32 @@ useEffect( () => {
      
   }, [ ]);
 
+  React.useEffect(() => {
+    console.log("Selections State Hook", checkSelection);
+  }, [checkSelection]);
+
+
     
-  const onQuantityChange = (e, _id) => {
+  const onQuantityChange = async (e, _id) => {
     console.log(e)
     console.log(_id)
      console.log(productData)
 
      for (let i = 0; i < productData.length; i++) {
-      if (productData[i]?._id === _id ) { 
+      if (await productData[i]?._id === _id ) { 
         productData[i].quantity= e.target.value
       }
     }
-
-
-
   }
+  useEffect(() => {
+    onQuantityChange();
+    
+ }, );
+
     
     const handleDelete = (_id) => {
 
-      var apiurl = process.env.REACT_APP_API_URL + '/api/cliente/';
+      var apiurl = process.env.REACT_APP_API_URL + '/api/producto/';
       setData(productData.filter((item) => item._id !== _id));
       
     axios.delete(apiurl + `${productData._id}`, { withCredentials: true } , { data: productData.filter((item) => item._id !== _id) }).then(
@@ -93,22 +103,24 @@ useEffect( () => {
       console.log(selectedOption)
       console.log(checkSelection)
       var apiurl = process.env.REACT_APP_API_URL + '/api/venta/';
-      checkSelection.forEach( async idProducto => { 
+      
+      checkSelection?.forEach( async idProducto => { 
         
-        const productQuantity = productData.find( (producto) => producto._id === idProducto )?.quantity
+        const productQuantity = productData?.find( (producto) => producto._id === idProducto )?.quantity
         await axios.post( apiurl, {idProducto, idCliente:selectedOption.value, cantidad:productQuantity }, { withCredentials: true }).then(response => { 
           console.log(response)
           swal({
             title: "Venta exitosa",
             text: "Puede ver las ventas en el menu Ventas",
             icon: "success",
-            timer: 100000,
-            button: true
+            timer: 1000,
+            button: false
           })
           this.setState({ redirect: this.state.redirect === false });
       })
       .catch(err => { 
-        console.log(err) 
+        console.log(err)
+          
       });   
       })
       
@@ -130,11 +142,11 @@ useEffect( () => {
  
 
     const columns = [
-    { field: "_id", headerName: "SKU", width: 120 },
+    { field: "_id", headerName: "SKU",  flex: 1 },
     {
       field: "nombre",
       headerName: "Nombre Producto",
-      width: 200,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className="userListUser">
@@ -144,35 +156,35 @@ useEffect( () => {
         );
       },
     },
-    { field: "descripcion", headerName: "Descripcion", width: 200 },
+    { field: "descripcion", headerName: "Descripcion", flex: 1 },
 
     {
       field: "precio",
       headerName: "Precio",
-      width: 120,
+      flex: 1,
     },
     {
       field: "fechaCreacion",
       headerName: "Fecha Creacion",
-      width: 120,
+      flex: 1,
     },
     {
       field: "fechaModificacion",
       headerName: "Fecha Modificacion",
-      width: 120,
+      flex: 1,
     },
     
     {
       field: "action",
       headerName: "Action",
-      width: 220,
+      flex: 1,
       renderCell: (params) => {
         return (
           <>
             
           
   
-            <input type="number" id="quantity" name="quantity"  min="1" max="10" defaultValue={1} onChange={(e) => {
+            <input type="number" id="quantity" name="quantity"  min="1" max="10" defaultValue={1}  onChange={(e) => {
               onQuantityChange(e, params.row._id)
             }} />
 
@@ -239,12 +251,12 @@ useEffect( () => {
 
       <DataGrid
         rows={productData}
-        //data={productData}
+        
         getRowId={(rows) => rows._id}
         disableSelectionOnClick
         enableCellSelect
         columns={columns}
-        pageSize={8}
+        pageSize={15}
         value={productData}
         checkboxSelection 
         onSelectionModelChange={(newSelectionModel) => {

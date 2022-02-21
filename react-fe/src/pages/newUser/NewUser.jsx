@@ -7,78 +7,89 @@ import { withRouter} from 'react-router-dom';
 
 
 const initialState = {
-  name: "",
-  email: "",
-  password: "",
-  nameError: "",
-  emailError: "",
-  passwordError: ""
+  apellidoPaterno: "",
+  apellidoMaterno: "",
+  nombre: "",
+  fechaNacimiento: "",
+  sexo: null,
+  telefono: '',
+  direccion: ''
 };
 
 
 class NewUser extends Component {
+
+  
   constructor() {
     super();
-
-    this.state = {
-      apellidoPaterno: "",
-      apellidoMaterno: "",
-      nombre: "",
-      fechaNacimiento: "",
-      sexo: null,
-      telefono: '',
-      direccion: ''
-    };
-    this._handleRadio = this._handleRadio.bind(this);
+    this.state = initialState
+    this.handleRadio = this.handleRadio.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-
-
-
-  _handleRadio(event) {
+  handleRadio(event) {
     const sexo = event.currentTarget.value === 'true' ? true: false;
     console.log('handle', sexo);
-    this.setState({ sexo });
+    this.setState( {sexo} );
   }
 
 
-  handleChange = (event) => {
-    const { value, name } = event.target;
+  handleChange = event => {
+    const isCheckbox = event.target.type === "checkbox";
     this.setState({
-      [name]: value
+      [event.target.name]: isCheckbox
+        ? event.target.checked
+        : event.target.value
     });
-  }
+  };
+  // handleChange = (event) => {
+  //   const { value, name } = event.target;
+  //   this.setState({
+  //     [name]: value
+  //   });
+  // }
 
   validate = () => {
-    let nameError = "";
-    let emailError = "";
+    let apellidoPaternoError = "";
+    let apellidoMaternoError = "";
+    let nombreError = "";
+    let telefonoError = "";
+    let direccionError = "";
     // let passwordError = "";
 
-    if (!this.state.name) {
-      nameError = "name cannot be blank";
+    if (!this.state.apellidoPaterno) {
+      apellidoPaternoError = "Ingrese apellido paterno";
+    }
+    if (!this.state.apellidoMaterno) {
+      apellidoMaternoError = "Ingrese apellido materno";
+    }
+    if (!this.state.nombre) {
+      nombreError = "Ingrese nombre";
+    }
+    if (!this.state.telefono) {
+      telefonoError = "Ingrese numero de telefono";
+    }
+    if (!this.state.direccion) {
+      direccionError = "Ingrese direccion";
     }
 
-    if (!this.state.email.includes("@")) {
-      emailError = "invalid email";
-    }
 
-
-
-
-
-    if (emailError || nameError) {
-      this.setState({ emailError, nameError });
+    if (apellidoPaternoError || apellidoMaternoError || nombreError ||    telefonoError || direccionError) {
+      this.setState({ apellidoPaternoError, apellidoMaternoError, nombreError,   telefonoError, direccionError});
       return false;
     }
 
     return true;
   };
 
+
   handleSubmit = (event) => {
     //const[login,setIsLoggedIn]=useState(false)
     event.preventDefault(event);
+    const isValid = this.validate();
+    if (isValid){
+    
     fetch(process.env.REACT_APP_API_URL + '/api/cliente/' , {
       method: 'POST',
       credentials: 'include',
@@ -109,11 +120,13 @@ class NewUser extends Component {
     });
   }
   
+}
+
 
 
   render() {
     const { sexo } = this.state;
-    console.log(sexo, true);
+    console.log(sexo);
     return (
       <div className="newUser">
          
@@ -125,49 +138,78 @@ class NewUser extends Component {
             value={this.state.apellidoPaterno}
             onChange={this.handleChange} 
             required />
+                    <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.apellidoPaternoError}
           </div>
+          </div>
+
           <div className="newUserItem">
             <label>Apellido Materno</label>
             <input type="text" name="apellidoMaterno"
             value={this.state.apellidoMaterno}
             onChange={this.handleChange} 
             required />
+                <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.apellidoMaternoError}
           </div>
+          </div>
+    
           <div className="newUserItem">
             <label>Nombre</label>
             <input type="text" name="nombre"
             value={this.state.nombre}
             onChange={this.handleChange} 
             required />
+                  <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.nombreError}
           </div>
+          </div>
+  
           <div className="newUserItem">
             <label>Fecha Nacimieto</label>
             <Dates name="fechaNacimiento" value={this.state.fechaNacimiento} onChange={this.handleChange} 
             required/>
+                    <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.fechaNacimientoError}
           </div>
-  
+          </div>
+
           <div className="newUserItem">
             <label>Telefono</label>
-            <input type="text" name="telefono" value={this.state.telefono}
+            <input type="number" name="telefono"  value={this.state.telefono}
             onChange={this.handleChange} 
             required />
+                    <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.telefonoError}
           </div>
+          </div>
+
           <div className="newUserItem">
             <label>Direccion</label>
             <input type="text" name="direccion"
             value={this.state.direccion}
             onChange={this.handleChange} 
             required />
+                    <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.direccionError}
           </div>
+          </div>
+
           <div className="newUserItem">
             <label>Sexo</label>
             <div className="newUserGender">
-              <input type="radio" name="sexo" id="false" value="true" checked={sexo === true} onChange={this._handleRadio} />
+              {/* eslint-disable-next-line */}
+              <input type="radio" name="sexo" id="true" value="true" checked={sexo === true} onChange={this.handleRadio} checked/>
               <label for="false">Masculino</label>
-              <input type="radio" name="sexo" id="true" value="false" checked={sexo === false} onChange={this._handleRadio} />
+              <input type="radio" name="sexo" id="false" value="false" checked={sexo === false} onChange={this.handleRadio} />
               <label for="true">Femenino</label>
             </div>
+            
+
+
           </div>
+
+          
           <button className="newUserButton" onClick={this.handleSubmit}>Crear Cliente</button>
         </form>
         

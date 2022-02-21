@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from 'axios';
 import * as React from 'react';  
+import dateFormat from 'dateformat'
 
 export default function UserList() {
   const [datauser, setData] = useState([]);
@@ -59,11 +60,11 @@ const deleteCustomerByIds = async () => {
  
 
     const columns = [
-    { field: "_id", headerName: "ID", width: 90 },
+    { field: "_id", headerName: "ID", flex: 1 },
     {
       field: "nombre",
       headerName: "Nombre",
-      width: 200,
+      flex: 1,
       renderCell: (params) => {
         return (
           <div className="userListUser">
@@ -73,27 +74,27 @@ const deleteCustomerByIds = async () => {
         );
       },
     },
-    { field: "apellidoPaterno", headerName: "ApellidoPaterno", width: 200 },
+    { field: "apellidoPaterno", headerName: "ApellidoPaterno", flex: 1 },
     {
       field: "apellidoMaterno",
       headerName: "ApellidoMaterno",
-      width: 120,
+      flex: 1,
     },
     {
       field: "fechaCreacion",
       headerName: "Fecha Creacion",
-      width: 120,
+      flex: 1,
     },
     {
       field: "fechaModificacion",
       headerName: "Fecha Modificacion",
-      width: 120,
+      flex: 1,
     },
     
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      flex: 1,
       renderCell: (params) => {
         return (
           <>

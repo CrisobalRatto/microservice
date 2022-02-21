@@ -7,7 +7,6 @@ const ProductoSchema =  Schema({
     sku: {
         type: String,
         //required: [true ]
-        unique:true
 
     },
     nombre: {

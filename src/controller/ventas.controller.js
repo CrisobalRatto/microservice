@@ -51,7 +51,8 @@ exports.agregarVentas = async (req, res)=>{
         const iva = producto.precio * 0.19
         const cantidad = req.body.cantidad
         var newVenta = {
-
+            sku: producto._id,
+            
             folio: req.body.folio,
             idCliente: mongoose.Types.ObjectId(req.body.idCliente),
             // idProducto: mongoose.Types.ObjectId(req.body.idProducto),

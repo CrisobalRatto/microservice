@@ -5,19 +5,21 @@ import React, { Component } from "react";
 
 import { withRouter} from 'react-router-dom';
 
+
+const initialState = {
+  nombre: "",
+  marca: "",
+  descripcion: "",
+  precio: null,
+};
+
+
+
 class NewProduct extends Component {
   constructor() {
     super();
 
-    this.state = {
-      
-      nombre: "",
-      marca: "",
-      descripcion: "",
-      precio: null,
-      fechaCreacion: '',
-      fechaModificacion: ''
-    };
+    this.state = initialState
   
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -25,16 +27,54 @@ class NewProduct extends Component {
 
 
 
-  handleChange = (event) => {
-    const { value, name } = event.target;
-    this.setState({
-      [name]: value
-    });
-  }
+  // handleChange = (event) => {
+  //   const { value, name } = event.target;
+  //   this.setState({
+  //     [name]: value
+  //   });
+  // }
 
+  handleChange = event => {
+    const isCheckbox = event.target.type === "checkbox";
+    this.setState({
+      [event.target.name]: isCheckbox
+        ? event.target.checked
+        : event.target.value
+    });
+  };
+
+  validate = () => {
+    let nombreError = "";
+    let marcaError = "";
+    let descripcionError = "";
+    let precioError = "";
+
+
+    if (!this.state.nombre) {
+      nombreError = "Ingrese nombre producto";
+    }
+    if (!this.state.marca) {
+      marcaError = "Ingrese marca producto";
+    }
+    if (!this.state.descripcion) {
+      descripcionError = "Ingrese descripcion de producto";
+    }
+    if (!this.state.precio  ) {
+      precioError = "Ingrese precio producto en numeros";
+    }
+
+    if (nombreError || marcaError || descripcionError || precioError ) {
+      this.setState({ nombreError, marcaError, descripcionError, precioError});
+      return false;
+    }
+
+    return true;
+  };
 
   handleSubmit = (event) => {
     event.preventDefault(event);
+    const isValid = this.validate();
+    if (isValid){
     fetch(process.env.REACT_APP_API_URL + '/api/producto/' , {
       method: 'POST',
       credentials: 'include',
@@ -50,9 +90,6 @@ class NewProduct extends Component {
         window.location.reload();
         //return <Redirect to='/'/>;
 
-
-
-
       }
       else {
         const error = new Error(res.error);
@@ -63,6 +100,7 @@ class NewProduct extends Component {
       console.error(err);
       alert('error');
     });
+  }
   }
   
 
@@ -80,27 +118,43 @@ class NewProduct extends Component {
             value={this.state.nombre}
             onChange={this.handleChange} 
             required />
+          <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.nombreError}
           </div>
+          </div>
+          
           <div className="newUserItem">
             <label>Marca Producto</label>
             <input type="text" name="marca"
             value={this.state.marca}
             onChange={this.handleChange} 
             required />
+            <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.marcaError}
           </div>
+          </div>
+        
           <div className="newUserItem">
             <label>Descripcion</label>
             <input type="text" name="descripcion"
             value={this.state.descripcion}
             onChange={this.handleChange} 
             required />
+              <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.descripcionError}
           </div>
+          </div>
+      
           <div className="newUserItem">
             <label>Precio</label>
-            <input type="text" name="precio" value={this.state.precio}
+            <input type="number" name="precio" value={this.state.precio}
             onChange={this.handleChange} 
             required />
+                   <div style={{ fontSize: 12, color: "red" }}>
+            {this.state.precioError}
           </div>
+          </div>
+ 
  
 
           <button className="newUserButton" onClick={this.handleSubmit}>Nuevo Producto</button>

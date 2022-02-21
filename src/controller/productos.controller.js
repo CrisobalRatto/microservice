@@ -91,10 +91,10 @@ exports.eliminarProductoID = (req,res) => {
 
 } 
 
-//eliminando clientes
+//eliminando productos
 exports.eliminarProductoIDBulk = async (req, res)=>{
     try { 
-     await Cliente.deleteMany(
+     await Producto.deleteMany(
          {
            _id: {
              $in: req.body
@@ -119,7 +119,7 @@ exports.modificarProductoID = (req,res) => {
 
         }, 
         {
-            sku: req.body.sku,
+            
             nombre: req.body.nombre,
             marca: req.body.marca,
             descripcion: req.body.descripcion,

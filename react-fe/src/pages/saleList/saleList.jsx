@@ -7,7 +7,8 @@ import { DeleteOutline } from "@material-ui/icons";
 //import * as React from 'react';
 import { useEffect, useState } from "react";
 import axios from 'axios';
-import * as React from 'react';  
+import * as React from 'react'; 
+import dateFormat from 'dateformat' 
 
 export default function SaleList() {
   const [datasale, setData] = useState([]);
@@ -87,27 +88,27 @@ const deleteSalesByIds = async () => {
  
 
     const columns = [
-    { field: "_id", headerName: "Folio", width: 160 },
+    { field: "_id", headerName: "Folio", flex: 1 },
  
     {
       field: "idCliente",
       headerName: "idCliente",
-      width: 160,
+      flex: 1,
     },
     {
       field: "cantidad",
       headerName: "Cantidad",
-      width: 160,
+      flex: 1,
     },
     {
       field: "fechaCreacion",
       headerName: "Fecha Venta",
-      width: 160,
+      flex: 1,
     },
     {
       field: "total",
       headerName: "Total venta",
-      width: 160,
+      flex: 1,
     },
     // {
     //   field: "idProducto",
@@ -120,7 +121,7 @@ const deleteSalesByIds = async () => {
     {
       field: "action",
       headerName: "Action",
-      width: 150,
+      flex: 1,
       renderCell: (params) => {
         return (
           <>
@@ -161,7 +162,7 @@ const deleteSalesByIds = async () => {
         //disableSelectionOnClick
         enableCellSelect
         columns={columns}
-        pageSize={8}
+        pageSize={12}
         value={datasale}
         checkboxSelection
         onSelectionModelChange={(newSelectionModel) => {
